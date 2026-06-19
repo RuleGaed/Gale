@@ -29,6 +29,23 @@
              delta = this.maybeBackOffFromEdge(delta, moverType);
              Vec3 movement = this.collide(delta);
              double movementLength = movement.lengthSqr();
+@@ -741,7 +741,14 @@
+             if (movementLength > 1.0E-7 || delta.lengthSqr() - movementLength < 1.0E-7) {
+                 if (this.fallDistance != 0.0 && movementLength >= 1.0) {
+-                    double checkDistance = Math.min(movement.length(), 8.0);
+-                    Vec3 checkTo = this.position().add(movement.normalize().scale(checkDistance));
++                    // Gale start - Leaf - optimize movement vector normalization
++                    Vec3 checkTo;
++                    if (movementLength > 64.0) {
++                        double scale = 8.0 / Math.sqrt(movementLength);
++                        checkTo = this.position().add(movement.x * scale, movement.y * scale, movement.z * scale);
++                    } else {
++                        checkTo = this.position().add(movement.x, movement.y, movement.z);
++                    }
++                    // Gale end - Leaf - optimize movement vector normalization
+                     BlockHitResult hitResult = this.level()
+                         .clip(new ClipContext(this.position(), checkTo, ClipContext.Block.FALLDAMAGE_RESETTING, ClipContext.Fluid.WATER, this));
+                     if (hitResult.getType() != HitResult.Type.MISS) {
 @@ -4580,6 +4593,11 @@ public abstract class Entity
      }
  
