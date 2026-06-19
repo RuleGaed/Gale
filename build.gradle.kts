@@ -47,6 +47,11 @@ paperweight {
         ref = providers.gradleProperty("paperCommit")
 
         patchFile {
+            path = "paper-server/build.gradle.kts"
+            outputFile = file("gale-server/build.gradle.kts")
+            patchFile = file("gale-server/build.gradle.kts.patch")
+        }
+        patchFile {
             path = "paper-api/build.gradle.kts"
             outputFile = file("gale-api/build.gradle.kts")
             patchFile = file("gale-api/build.gradle.kts.patch")

@@ -63,4 +63,7 @@ gale-api/tmp/
 paper-api/
 paper-server/
 
+gale-api/build.gradle.kts
+gale-server/build.gradle.kts
+
 !gradle/wrapper/gradle-wrapper.jar

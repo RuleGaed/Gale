@@ -1,6 +1,27 @@
 --- a/paper-api/build.gradle.kts
 +++ b/paper-api/build.gradle.kts
-@@ -248,3 +_,20 @@
+@@ -103,7 +103,19 @@ idea {
+ sourceSets {
+     main {
+         java {
+-            srcDir(generatedDir)
++            srcDir("../paper-api/src/main/java")
++            srcDir("../paper-api/src/generated/java")
++        }
++        resources {
++            srcDir("../paper-api/src/main/resources")
++        }
++    }
++    test {
++        java {
++            srcDir("../paper-api/src/test/java")
++        }
++        resources {
++            srcDir("../paper-api/src/test/resources")
+         }
+     }
+ }
+@@ -248,3 +260,17 @@ val scanJarForBadCalls by tasks.registering(io.papermc.paperweight.tasks.ScanJar
  tasks.check {
      dependsOn(scanJarForBadCalls)
  }
