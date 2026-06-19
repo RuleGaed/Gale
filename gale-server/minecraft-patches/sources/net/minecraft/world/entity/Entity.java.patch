@@ -29,7 +29,7 @@
              delta = this.maybeBackOffFromEdge(delta, moverType);
              Vec3 movement = this.collide(delta);
              double movementLength = movement.lengthSqr();
-@@ -741,7 +741,14 @@
+@@ -754,7 +755,14 @@
              if (movementLength > 1.0E-7 || delta.lengthSqr() - movementLength < 1.0E-7) {
                  if (this.fallDistance != 0.0 && movementLength >= 1.0) {
 -                    double checkDistance = Math.min(movement.length(), 8.0);
