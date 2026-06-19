@@ -1,0 +1,21 @@
+--- a/net/minecraft/world/entity/animal/fish/AbstractSchoolingFish.java
++++ b/net/minecraft/world/entity/animal/fish/AbstractSchoolingFish.java
+@@ -12,8 +_,8 @@
+ import org.jspecify.annotations.Nullable;
+ 
+ public abstract class AbstractSchoolingFish extends AbstractFish {
+-    private @Nullable AbstractSchoolingFish leader;
+-    private int schoolSize = 1;
++    public @Nullable AbstractSchoolingFish leader;
++    public int schoolSize = 1;
+ 
+     public AbstractSchoolingFish(final EntityType<? extends AbstractSchoolingFish> type, final Level level) {
+         super(type, level);
+@@ -50,6 +_,7 @@
+     }
+ 
+     public void stopFollowing() {
++        if (this.leader == null) return; // Paper - Avoid NPE, plugins can now set the leader and certain fish goals might cause this method to be called
+         this.leader.removeFollower();
+         this.leader = null;
+     }

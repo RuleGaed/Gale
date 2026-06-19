@@ -1,0 +1,31 @@
+--- a/net/minecraft/world/entity/animal/golem/AbstractGolem.java
++++ b/net/minecraft/world/entity/animal/golem/AbstractGolem.java
+@@ -13,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected @Nullable SoundEvent getAmbientSound() {
+-        return null;
+-    }
+-
+-    @Override
+-    protected @Nullable SoundEvent getHurtSound(final DamageSource source) {
+-        return null;
+-    }
+-
+-    @Override
+-    protected @Nullable SoundEvent getDeathSound() {
++    public @Nullable SoundEvent getAmbientSound() {
++        return null;
++    }
++
++    @Override
++    public @Nullable SoundEvent getHurtSound(final DamageSource source) {
++        return null;
++    }
++
++    @Override
++    public @Nullable SoundEvent getDeathSound() {
+         return null;
+     }
+ 

@@ -1,0 +1,11 @@
+--- a/net/minecraft/advancements/Advancement.java
++++ b/net/minecraft/advancements/Advancement.java
+@@ -69,7 +_,7 @@
+         return advancement.requirements().validate(advancement.criteria().keySet()).map(r -> advancement);
+     }
+ 
+-    private static Component decorateName(final DisplayInfo display) {
++    public static Component decorateName(final DisplayInfo display) {
+         Component displayTitle = display.getTitle();
+         ChatFormatting color = display.getType().getChatColor();
+         Component tooltip = ComponentUtils.mergeStyles(displayTitle.copy(), Style.EMPTY.withColor(color)).append("\n").append(display.getDescription());

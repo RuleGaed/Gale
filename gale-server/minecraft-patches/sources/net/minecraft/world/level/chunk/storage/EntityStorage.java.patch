@@ -1,0 +1,34 @@
+--- a/net/minecraft/world/level/chunk/storage/EntityStorage.java
++++ b/net/minecraft/world/level/chunk/storage/EntityStorage.java
+@@ -31,10 +_,10 @@
+     private static final Logger LOGGER = LogUtils.getLogger();
+     private static final String ENTITIES_TAG = "Entities";
+     private static final String POSITION_TAG = "Position";
+-    private final ServerLevel level;
++    public final ServerLevel level;
+     private final SimpleRegionStorage simpleRegionStorage;
+     private final LongSet emptyChunks = new LongOpenHashSet();
+-    private final ConsecutiveExecutor entityDeserializerQueue;
++    public final ConsecutiveExecutor entityDeserializerQueue;
+ 
+     public EntityStorage(final SimpleRegionStorage simpleRegionStorage, final ServerLevel level, final Executor mainThreadExecutor) {
+         this.simpleRegionStorage = simpleRegionStorage;
+@@ -92,7 +_,18 @@
+         } else {
+             try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(ChunkAccess.problemPath(pos), LOGGER)) {
+                 ListTag entities = new ListTag();
++                final java.util.Map<net.minecraft.world.entity.EntityType<?>, Integer> savedEntityCounts = new java.util.HashMap<>(); // Paper - Entity load/save limit per chunk
+                 chunk.getEntities().forEach(e -> {
++                    // Paper start - Entity load/save limit per chunk
++                    final EntityType<?> entityType = e.getType();
++                    final int saveLimit = this.level.paperConfig().chunks.entityPerChunkSaveLimit.getOrDefault(entityType, -1);
++                    if (saveLimit > -1) {
++                        if (savedEntityCounts.getOrDefault(entityType, 0) >= saveLimit) {
++                            return;
++                        }
++                        savedEntityCounts.merge(entityType, 1, Integer::sum);
++                    }
++                    // Paper end - Entity load/save limit per chunk
+                     TagValueOutput output = TagValueOutput.createWithContext(reporter.forChild(e.problemPath()), e.registryAccess());
+                     if (e.save(output)) {
+                         CompoundTag result = output.buildResult();

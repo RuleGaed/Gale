@@ -1,0 +1,23 @@
+--- a/net/minecraft/world/entity/animal/equine/ZombieHorse.java
++++ b/net/minecraft/world/entity/animal/equine/ZombieHorse.java
+@@ -88,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.ZOMBIE_HORSE_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.ZOMBIE_HORSE_DEATH;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.ZOMBIE_HORSE_HURT;
+     }
+ 

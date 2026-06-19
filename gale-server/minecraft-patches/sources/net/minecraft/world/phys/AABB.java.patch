@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/phys/AABB.java
++++ b/net/minecraft/world/phys/AABB.java
+@@ -319,7 +_,7 @@
+         return new BlockHitResult(from.add(scale * dx, scale * dy, scale * dz), direction, pos, false);
+     }
+ 
+-    private static @Nullable Direction getDirection(
++    public static @Nullable Direction getDirection( // Paper - optimise collisions - public
+         final AABB aabb, final Vec3 from, final double[] scaleReference, final @Nullable Direction direction, final double dx, final double dy, final double dz
+     ) {
+         return getDirection(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, from, scaleReference, direction, dx, dy, dz);

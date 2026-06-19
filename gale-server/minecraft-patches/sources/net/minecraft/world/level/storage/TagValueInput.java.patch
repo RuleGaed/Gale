@@ -1,0 +1,26 @@
+--- a/net/minecraft/world/level/storage/TagValueInput.java
++++ b/net/minecraft/world/level/storage/TagValueInput.java
+@@ -29,13 +_,22 @@
+ public class TagValueInput implements ValueInput {
+     private final ProblemReporter problemReporter;
+     private final ValueInputContextHelper context;
+-    private final CompoundTag input;
++    public final CompoundTag input;
+ 
+     private TagValueInput(final ProblemReporter problemReporter, final ValueInputContextHelper context, final CompoundTag input) {
+         this.problemReporter = problemReporter;
+         this.context = context;
+         this.input = input;
+     }
++
++    // Paper start - utility methods
++    public static ValueInput createGlobal(
++        final ProblemReporter problemReporter,
++        final CompoundTag compoundTag
++    ) {
++        return create(problemReporter, net.minecraft.server.MinecraftServer.getServer().registryAccess(), compoundTag);
++    }
++    // Paper end - utility methods
+ 
+     public static ValueInput create(final ProblemReporter problemReporter, final HolderLookup.Provider holders, final CompoundTag tag) {
+         return new TagValueInput(problemReporter, new ValueInputContextHelper(holders, NbtOps.INSTANCE), tag);

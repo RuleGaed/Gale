@@ -1,0 +1,37 @@
+--- a/net/minecraft/world/entity/animal/chicken/Chicken.java
++++ b/net/minecraft/world/entity/animal/chicken/Chicken.java
+@@ -93,11 +_,11 @@
+         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+     }
+ 
+-    private Holder<ChickenSoundVariant> getSoundVariant() {
++    public Holder<ChickenSoundVariant> getSoundVariant() {
+         return this.entityData.get(DATA_SOUND_VARIANT_ID);
+     }
+ 
+-    private void setSoundVariant(final Holder<ChickenSoundVariant> soundVariant) {
++    public void setSoundVariant(final Holder<ChickenSoundVariant> soundVariant) {
+         this.entityData.set(DATA_SOUND_VARIANT_ID, soundVariant);
+     }
+ 
+@@ -153,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return this.getSoundSet().ambientSound().value();
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return this.getSoundSet().hurtSound().value();
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return this.getSoundSet().deathSound().value();
+     }
+ 

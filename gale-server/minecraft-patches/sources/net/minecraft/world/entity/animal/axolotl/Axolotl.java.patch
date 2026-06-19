@@ -1,0 +1,79 @@
+--- a/net/minecraft/world/entity/animal/axolotl/Axolotl.java
++++ b/net/minecraft/world/entity/animal/axolotl/Axolotl.java
+@@ -274,14 +_,14 @@
+ 
+     @Override
+     public int getMaxAirSupply() {
+-        return 6000;
++        return this.maxAirTicks; // CraftBukkit - SPIGOT-6907: re-implement LivingEntity#setMaximumAir()
+     }
+ 
+     public Axolotl.Variant getVariant() {
+         return Axolotl.Variant.byId(this.entityData.get(DATA_VARIANT));
+     }
+ 
+-    private void setVariant(final Axolotl.Variant variant) {
++    public void setVariant(final Axolotl.Variant variant) {
+         this.entityData.set(DATA_VARIANT, variant.getId());
+     }
+ 
+@@ -488,10 +_,10 @@
+         if (regenEffect == null || regenEffect.endsWithin(2399)) {
+             int previousDuration = regenEffect != null ? regenEffect.getDuration() : 0;
+             int regenDuration = Math.min(2400, 100 + previousDuration);
+-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, regenDuration, 0), this);
++            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, regenDuration, 0), this, org.bukkit.event.entity.EntityPotionEffectEvent.Cause.AXOLOTL); // CraftBukkit
+         }
+ 
+-        player.removeEffect(MobEffects.MINING_FATIGUE);
++        player.removeEffect(MobEffects.MINING_FATIGUE, org.bukkit.event.entity.EntityPotionEffectEvent.Cause.AXOLOTL); // Paper - Add missing effect cause
+     }
+ 
+     @Override
+@@ -500,27 +_,27 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.AXOLOTL_HURT;
+     }
+ 
+     @Override
+-    protected @Nullable SoundEvent getDeathSound() {
++    public @Nullable SoundEvent getDeathSound() {
+         return SoundEvents.AXOLOTL_DEATH;
+     }
+ 
+     @Override
+-    protected @Nullable SoundEvent getAmbientSound() {
++    public @Nullable SoundEvent getAmbientSound() {
+         return this.isInWater() ? SoundEvents.AXOLOTL_IDLE_WATER : SoundEvents.AXOLOTL_IDLE_AIR;
+     }
+ 
+     @Override
+-    protected SoundEvent getSwimSplashSound() {
++    public SoundEvent getSwimSplashSound() {
+         return SoundEvents.AXOLOTL_SPLASH;
+     }
+ 
+     @Override
+-    protected SoundEvent getSwimSound() {
++    public SoundEvent getSwimSound() {
+         return SoundEvents.AXOLOTL_SWIM;
+     }
+ 
+@@ -569,6 +_,13 @@
+     ) {
+         return level.getBlockState(pos.below()).is(BlockTags.AXOLOTLS_SPAWNABLE_ON);
+     }
++
++    // CraftBukkit start - SPIGOT-6907: re-implement LivingEntity#setMaximumAir()
++    @Override
++    public int getDefaultMaxAirSupply() {
++        return AXOLOTL_TOTAL_AIR_SUPPLY;
++    }
++    // CraftBukkit end
+ 
+     @Override
+     public EntityDimensions getDefaultDimensions(final Pose pose) {

@@ -1,0 +1,28 @@
+--- a/net/minecraft/world/effect/MobEffect.java
++++ b/net/minecraft/world/effect/MobEffect.java
+@@ -40,7 +_,7 @@
+     public static final Codec<Holder<MobEffect>> CODEC = BuiltInRegistries.MOB_EFFECT.holderByNameCodec();
+     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<MobEffect>> STREAM_CODEC = ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT);
+     private static final int AMBIENT_ALPHA = Mth.floor(38.25F);
+-    private final Map<Holder<Attribute>, MobEffect.AttributeTemplate> attributeModifiers = new Object2ObjectOpenHashMap<>();
++    public final Map<Holder<Attribute>, MobEffect.AttributeTemplate> attributeModifiers = new Object2ObjectOpenHashMap<>();
+     private final MobEffectCategory category;
+     private final int color;
+     private final Function<MobEffectInstance, ParticleOptions> particleFactory;
+@@ -90,6 +_,7 @@
+         final int amplification,
+         final double scale
+     ) {
++        if (!new io.papermc.paper.event.entity.EntityEffectTickEvent(mob.getBukkitLivingEntity(), org.bukkit.craftbukkit.potion.CraftPotionEffectType.minecraftToBukkit(this), amplification).callEvent()) { return; } // Paper - Add EntityEffectTickEvent
+         this.applyEffectTick(level, mob, amplification);
+     }
+ 
+@@ -203,7 +_,7 @@
+         return this.requiredFeatures;
+     }
+ 
+-    private record AttributeTemplate(Identifier id, double amount, AttributeModifier.Operation operation) {
++    public record AttributeTemplate(Identifier id, double amount, AttributeModifier.Operation operation) {
+         public AttributeModifier create(final int amplifier) {
+             return new AttributeModifier(this.id, this.amount * (amplifier + 1), this.operation);
+         }

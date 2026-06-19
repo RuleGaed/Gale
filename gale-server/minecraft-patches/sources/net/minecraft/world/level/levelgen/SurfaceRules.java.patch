@@ -1,0 +1,71 @@
+--- a/net/minecraft/world/level/levelgen/SurfaceRules.java
++++ b/net/minecraft/world/level/levelgen/SurfaceRules.java
+@@ -256,7 +_,7 @@
+         }
+     }
+ 
+-    private interface Condition {
++    public interface Condition {
+         boolean test();
+     }
+ 
+@@ -282,7 +_,7 @@
+         MapCodec<? extends SurfaceRules.ConditionSource> codec();
+     }
+ 
+-    protected static final class Context {
++    public static final class Context {
+         private static final int HOW_FAR_BELOW_PRELIMINARY_SURFACE_LEVEL_TO_BUILD_SURFACE = 8;
+         private static final int SURFACE_CELL_BITS = 4;
+         private static final int SURFACE_CELL_SIZE = 16;
+@@ -292,19 +_,19 @@
+         private final SurfaceRules.Condition steep = new SurfaceRules.Context.SteepMaterialCondition(this);
+         private final SurfaceRules.Condition hole = new SurfaceRules.Context.HoleCondition(this);
+         private final SurfaceRules.Condition abovePreliminarySurface = new SurfaceRules.Context.AbovePreliminarySurfaceCondition();
+-        private final RandomState randomState;
++        public final RandomState randomState;
+         private final ChunkAccess chunk;
+         private final NoiseChunk noiseChunk;
+         private final Function<BlockPos, Holder<Biome>> biomeGetter;
+-        private final WorldGenerationContext context;
++        public final WorldGenerationContext context;
+         private final @Nullable Set<Holder<Biome>> possibleBiomes;
+         private long lastPreliminarySurfaceCellOrigin = Long.MAX_VALUE;
+         private final int[] preliminarySurfaceCache = new int[4];
+         private final Map<ResourceKey<NormalNoise.NoiseParameters>, DoubleSupplier> noiseSamplers2d = new IdentityHashMap<>();
+         private final Map<ResourceKey<NormalNoise.NoiseParameters>, DoubleSupplier> noiseSamplers3d = new IdentityHashMap<>();
+         private long lastUpdateXZ = -9223372036854775807L;
+-        private int blockX;
+-        private int blockZ;
++        public int blockX;
++        public int blockZ;
+         private int surfaceDepth;
+         private long lastSurfaceDepth2Update = this.lastUpdateXZ - 1L;
+         private double surfaceSecondary;
+@@ -313,7 +_,7 @@
+         private long lastUpdateY = -9223372036854775807L;
+         private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+         private @Nullable Holder<Biome> biome;
+-        private int blockY;
++        public int blockY;
+         private int waterHeight;
+         private int stoneDepthBelow;
+         private int stoneDepthAbove;
+@@ -541,7 +_,7 @@
+         }
+     }
+ 
+-    private abstract static class LazyCondition implements SurfaceRules.Condition {
++    public abstract static class LazyCondition implements SurfaceRules.Condition {
+         protected final SurfaceRules.Context context;
+         private long lastUpdate;
+         private @Nullable Boolean result;
+@@ -583,7 +_,7 @@
+         }
+     }
+ 
+-    private abstract static class LazyYCondition extends SurfaceRules.LazyCondition {
++    public abstract static class LazyYCondition extends SurfaceRules.LazyCondition {
+         protected LazyYCondition(final SurfaceRules.Context context) {
+             super(context);
+         }

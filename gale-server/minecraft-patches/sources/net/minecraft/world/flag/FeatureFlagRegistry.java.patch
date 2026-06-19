@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/flag/FeatureFlagRegistry.java
++++ b/net/minecraft/world/flag/FeatureFlagRegistry.java
+@@ -17,7 +_,7 @@
+ public class FeatureFlagRegistry {
+     private static final Logger LOGGER = LogUtils.getLogger();
+     private final FeatureFlagUniverse universe;
+-    private final Map<Identifier, FeatureFlag> names;
++    public final Map<Identifier, FeatureFlag> names;
+     private final FeatureFlagSet allFlags;
+ 
+     private FeatureFlagRegistry(final FeatureFlagUniverse universe, final FeatureFlagSet allFlags, final Map<Identifier, FeatureFlag> names) {

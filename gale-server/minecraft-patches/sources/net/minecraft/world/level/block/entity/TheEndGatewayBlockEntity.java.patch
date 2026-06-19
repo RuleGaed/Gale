@@ -1,0 +1,25 @@
+--- a/net/minecraft/world/level/block/entity/TheEndGatewayBlockEntity.java
++++ b/net/minecraft/world/level/block/entity/TheEndGatewayBlockEntity.java
+@@ -35,10 +_,10 @@
+     private static final int GATEWAY_HEIGHT_ABOVE_SURFACE = 10;
+     private static final long DEFAULT_AGE = 0L;
+     private static final boolean DEFAULT_EXACT_TELEPORT = false;
+-    private long age = 0L;
++    public long age = 0L;
+     private int teleportCooldown;
+-    private @Nullable BlockPos exitPortal;
+-    private boolean exactTeleport = false;
++    public @Nullable BlockPos exitPortal;
++    public boolean exactTeleport = false;
+ 
+     public TheEndGatewayBlockEntity(final BlockPos worldPosition, final BlockState blockState) {
+         super(BlockEntityTypes.END_GATEWAY, worldPosition, blockState);
+@@ -129,7 +_,7 @@
+     }
+ 
+     public @Nullable Vec3 getPortalPosition(final ServerLevel currentLevel, final BlockPos portalEntryPos) {
+-        if (this.exitPortal == null && currentLevel.dimension() == Level.END) {
++        if (this.exitPortal == null && currentLevel.getTypeKey() == net.minecraft.world.level.dimension.LevelStem.END) { // CraftBukkit - work in alternate worlds
+             BlockPos exitPortalPos = findOrCreateValidTeleportPos(currentLevel, portalEntryPos);
+             exitPortalPos = exitPortalPos.above(10);
+             LOGGER.debug("Creating portal at {}", exitPortalPos);

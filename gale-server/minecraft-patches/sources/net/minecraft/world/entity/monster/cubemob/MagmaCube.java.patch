@@ -1,0 +1,17 @@
+--- a/net/minecraft/world/entity/monster/cubemob/MagmaCube.java
++++ b/net/minecraft/world/entity/monster/cubemob/MagmaCube.java
+@@ -120,12 +_,12 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return this.isTiny() ? SoundEvents.MAGMA_CUBE_HURT_SMALL : SoundEvents.MAGMA_CUBE_HURT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return this.isTiny() ? SoundEvents.MAGMA_CUBE_DEATH_SMALL : SoundEvents.MAGMA_CUBE_DEATH;
+     }
+ 

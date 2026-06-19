@@ -1,0 +1,32 @@
+--- a/net/minecraft/world/entity/monster/illager/Pillager.java
++++ b/net/minecraft/world/entity/monster/illager/Pillager.java
+@@ -182,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.PILLAGER_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.PILLAGER_DEATH;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.PILLAGER_HURT;
+     }
+ 
+@@ -215,7 +_,7 @@
+             this.onItemPickup(entity);
+             ItemStack remainder = this.inventory.addItem(itemStack);
+             if (remainder.isEmpty()) {
+-                entity.discard();
++                entity.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.PICKUP); // CraftBukkit - add Bukkit remove cause
+             } else {
+                 itemStack.setCount(remainder.getCount());
+             }

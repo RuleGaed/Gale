@@ -1,0 +1,29 @@
+--- a/net/minecraft/world/entity/animal/equine/Mule.java
++++ b/net/minecraft/world/entity/animal/equine/Mule.java
+@@ -17,7 +_,7 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.MULE_AMBIENT;
+     }
+ 
+@@ -27,7 +_,7 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.MULE_DEATH;
+     }
+ 
+@@ -37,7 +_,7 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.MULE_HURT;
+     }
+ 

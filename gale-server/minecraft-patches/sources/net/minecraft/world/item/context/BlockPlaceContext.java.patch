@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/item/context/BlockPlaceContext.java
++++ b/net/minecraft/world/item/context/BlockPlaceContext.java
+@@ -22,7 +_,7 @@
+         this(context.getLevel(), context.getPlayer(), context.getHand(), context.getItemInHand(), context.getHitResult());
+     }
+ 
+-    protected BlockPlaceContext(
++    public BlockPlaceContext(
+         final Level level, final @Nullable Player player, final InteractionHand hand, final ItemStack itemStackInHand, final BlockHitResult hitResult
+     ) {
+         super(level, player, hand, itemStackInHand, hitResult);

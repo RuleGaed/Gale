@@ -1,0 +1,52 @@
+--- a/net/minecraft/world/entity/animal/nautilus/AbstractNautilus.java
++++ b/net/minecraft/world/entity/animal/nautilus/AbstractNautilus.java
+@@ -79,7 +_,7 @@
+     private static final float DASH_MOMENTUM_ON_LAND = 0.5F;
+     private int dashCooldown = 0;
+     protected float playerJumpPendingScale;
+-    protected SimpleContainer inventory;
++    public SimpleContainer inventory;
+     private static final double BUBBLE_SPREAD_FACTOR = 0.8;
+     private static final double BUBBLE_DIRECTION_SCALE = 1.1;
+     private static final double BUBBLE_Y_OFFSET = 0.25;
+@@ -141,8 +_,12 @@
+     ) {
+         int seaLevel = level.getSeaLevel();
+         int minSpawnLevel = seaLevel - 25;
++        // Paper start - Make water animal spawn height configurable
++        seaLevel = level.getMinecraftWorld().paperConfig().entities.spawning.wateranimalSpawnHeight.maximum.or(seaLevel - 5);
++        minSpawnLevel = level.getMinecraftWorld().paperConfig().entities.spawning.wateranimalSpawnHeight.minimum.or(minSpawnLevel);
++        // Paper end - Make water animal spawn height configurable
+         return pos.getY() >= minSpawnLevel
+-            && pos.getY() <= seaLevel - 5
++            && pos.getY() <= seaLevel // Paper - Make water animal spawn height configurable
+             && level.getFluidState(pos.below()).is(FluidTags.WATER)
+             && level.getBlockState(pos.above()).is(Blocks.WATER);
+     }
+@@ -263,7 +_,7 @@
+             boolean hasEffect = player.hasEffect(MobEffects.BREATH_OF_THE_NAUTILUS);
+             boolean shouldRefresh = level.getGameTime() % 40L == 0L;
+             if (!hasEffect || shouldRefresh) {
+-                player.addEffect(new MobEffectInstance(MobEffects.BREATH_OF_THE_NAUTILUS, 60, 0, true, true, true));
++                player.addEffect(new MobEffectInstance(MobEffects.BREATH_OF_THE_NAUTILUS, 60, 0, true, true, true), org.bukkit.event.entity.EntityPotionEffectEvent.Cause.NAUTILUS); // Paper - Add cause
+             }
+         }
+     }
+@@ -433,7 +_,7 @@
+     }
+ 
+     private void tryToTame(final Player player) {
+-        if (this.random.nextInt(3) == 0) {
++        if (this.random.nextInt(3) == 0 && !org.bukkit.craftbukkit.event.CraftEventFactory.callEntityTameEvent(this, player).isCancelled()) { // CraftBukkit - added event call
+             this.tame(player);
+             this.navigation.stop();
+             this.level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
+@@ -488,7 +_,7 @@
+ 
+     protected void createInventory() {
+         SimpleContainer old = this.inventory;
+-        this.inventory = new SimpleContainer(this.getInventorySize());
++        this.inventory = new SimpleContainer(this.getInventorySize(), (org.bukkit.entity.AbstractNautilus) this.getBukkitEntity()); // Paper - add owner
+         if (old != null) {
+             int max = Math.min(old.getContainerSize(), this.inventory.getContainerSize());
+ 

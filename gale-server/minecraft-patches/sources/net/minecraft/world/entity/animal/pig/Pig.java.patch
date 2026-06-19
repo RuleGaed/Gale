@@ -1,0 +1,71 @@
+--- a/net/minecraft/world/entity/animal/pig/Pig.java
++++ b/net/minecraft/world/entity/animal/pig/Pig.java
+@@ -70,7 +_,7 @@
+     private static final EntityDimensions BABY_DIMENSIONS = EntityDimensions.scalable(0.45F, 0.45F)
+         .withEyeHeight(0.40625F)
+         .withAttachments(EntityAttachments.builder().attach(EntityAttachment.PASSENGER, 0.0F, 0.5F, 0.0F));
+-    private final ItemBasedSteering steering = new ItemBasedSteering(this.entityData, DATA_BOOST_TIME);
++    public final ItemBasedSteering steering = new ItemBasedSteering(this.entityData, DATA_BOOST_TIME);
+ 
+     public Pig(final EntityType<? extends Pig> type, final Level level) {
+         super(type, level);
+@@ -139,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return this.getSoundSet().ambientSound().value();
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return this.getSoundSet().hurtSound().value();
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return this.getSoundSet().deathSound().value();
+     }
+ 
+@@ -204,7 +_,14 @@
+             ZombifiedPiglin zombifiedPiglin = this.convertTo(EntityTypes.ZOMBIFIED_PIGLIN, ConversionParams.single(this, false, true), zp -> {
+                 zp.populateDefaultEquipmentSlots(this.getRandom(), level.getCurrentDifficultyAt(this.blockPosition()));
+                 zp.setPersistenceRequired();
+-            });
++                // CraftBukkit start
++            }, null, null);
++            if (org.bukkit.craftbukkit.event.CraftEventFactory.callPigZapEvent(this, lightningBolt, zombifiedPiglin).isCancelled()) {
++                return;
++            }
++            level.addFreshEntity(zombifiedPiglin, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING);
++            this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.TRANSFORMATION); // CraftBukkit - add Bukkit remove cause
++            // CraftBukkit end
+             if (zombifiedPiglin == null) {
+                 super.thunderHit(level, lightningBolt);
+             }
+@@ -261,7 +_,7 @@
+         return new Vec3(0.0, 0.6F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
+     }
+ 
+-    private void setVariant(final Holder<PigVariant> variant) {
++    public void setVariant(final Holder<PigVariant> variant) {
+         this.entityData.set(DATA_VARIANT_ID, variant);
+     }
+ 
+@@ -269,11 +_,11 @@
+         return this.entityData.get(DATA_VARIANT_ID);
+     }
+ 
+-    private Holder<PigSoundVariant> getSoundVariant() {
++    public Holder<PigSoundVariant> getSoundVariant() {
+         return this.entityData.get(DATA_SOUND_VARIANT_ID);
+     }
+ 
+-    private void setSoundVariant(final Holder<PigSoundVariant> soundVariant) {
++    public void setSoundVariant(final Holder<PigSoundVariant> soundVariant) {
+         this.entityData.set(DATA_SOUND_VARIANT_ID, soundVariant);
+     }
+ 

@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/decoration/HangingEntity.java
++++ b/net/minecraft/world/entity/decoration/HangingEntity.java
+@@ -57,7 +_,7 @@
+         this.entityData.set(DATA_DIRECTION, direction);
+     }
+ 
+-    protected void setDirection(final Direction direction) {
++    public void setDirection(final Direction direction) {
+         Objects.requireNonNull(direction);
+         Validate.isTrue(direction.getAxis().isHorizontal());
+         this.setDirectionRaw(direction);

@@ -1,0 +1,161 @@
+--- a/net/minecraft/world/entity/animal/wolf/Wolf.java
++++ b/net/minecraft/world/entity/animal/wolf/Wolf.java
+@@ -111,7 +_,7 @@
+     private static final DyeColor DEFAULT_COLLAR_COLOR = DyeColor.RED;
+     private float interestedAngle;
+     private float interestedAngleO;
+-    private boolean isWet;
++    public boolean isWet;
+     private boolean isShaking;
+     private float shakeAnim;
+     private float shakeAnimO;
+@@ -159,15 +_,15 @@
+         }
+     }
+ 
+-    private Holder<WolfVariant> getVariant() {
++    public Holder<WolfVariant> getVariant() {
+         return this.entityData.get(DATA_VARIANT_ID);
+     }
+ 
+-    private void setVariant(final Holder<WolfVariant> variant) {
++    public void setVariant(final Holder<WolfVariant> variant) {
+         this.entityData.set(DATA_VARIANT_ID, variant);
+     }
+ 
+-    private Holder<WolfSoundVariant> getSoundVariant() {
++    public Holder<WolfSoundVariant> getSoundVariant() {
+         return this.entityData.get(DATA_SOUND_VARIANT_ID);
+     }
+ 
+@@ -175,7 +_,7 @@
+         return this.isBaby() ? this.getSoundVariant().value().babySounds() : this.getSoundVariant().value().adultSounds();
+     }
+ 
+-    private void setSoundVariant(final Holder<WolfSoundVariant> soundVariant) {
++    public void setSoundVariant(final Holder<WolfSoundVariant> soundVariant) {
+         this.entityData.set(DATA_SOUND_VARIANT_ID, soundVariant);
+     }
+ 
+@@ -279,7 +_,7 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         if (this.isAngry()) {
+             return this.getSoundSet().growlSound().value();
+         } else if (this.random.nextInt(3) == 0) {
+@@ -290,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return this.canArmorAbsorb(source) ? SoundEvents.WOLF_ARMOR_DAMAGE : this.getSoundSet().hurtSound().value();
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return this.getSoundSet().deathSound().value();
+     }
+ 
+     @Override
+-    protected float getSoundVolume() {
++    public float getSoundVolume() {
+         return 0.4F;
+     }
+ 
+@@ -404,15 +_,18 @@
+             return false;
+         }
+ 
++        if (!super.hurtServer(level, source, damage)) return false; // CraftBukkit
+         this.setOrderedToSit(false);
+-        return super.hurtServer(level, source, damage);
++        return true; // CraftBukkit
++
+     }
+ 
+     @Override
+-    protected void actuallyHurt(final ServerLevel level, final DamageSource source, final float damage) {
++    public boolean actuallyHurt(final ServerLevel level, final DamageSource source, final float damage, final org.bukkit.event.entity.EntityDamageEvent event) { // CraftBukkit - void -> boolean
+         if (!this.canArmorAbsorb(source)) {
+-            super.actuallyHurt(level, source, damage);
++            return super.actuallyHurt(level, source, damage, event); // CraftBukkit
+         } else {
++            if (event.isCancelled()) return false; // CraftBukkit - SPIGOT-7815: if the damage was cancelled, no need to run the wolf armor behaviour
+             ItemStack armorBefore = this.getBodyArmorItem();
+             int damageBefore = armorBefore.getDamageValue();
+             int maxDamage = armorBefore.getMaxDamage();
+@@ -424,6 +_,7 @@
+                 );
+             }
+         }
++        return true; // CraftBukkit // Paper - return false ONLY if event was cancelled
+     }
+ 
+     private boolean canArmorAbsorb(final DamageSource source) {
+@@ -434,7 +_,7 @@
+     protected void applyTamingSideEffects() {
+         if (this.isTame()) {
+             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40.0);
+-            this.setHealth(40.0F);
++            this.setHealth(this.getMaxHealth()); // CraftBukkit - 40.0 -> getMaxHealth()
+         } else {
+             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0);
+         }
+@@ -484,7 +_,7 @@
+                     this.setOrderedToSit(!this.isOrderedToSit());
+                     this.jumping = false;
+                     this.navigation.stop();
+-                    this.setTarget(null);
++                    this.setTarget(null, org.bukkit.event.entity.EntityTargetEvent.TargetReason.FORGOT_TARGET); // CraftBukkit - reason
+                     return InteractionResult.SUCCESS.withoutItem();
+                 }
+ 
+@@ -493,6 +_,25 @@
+ 
+             DyeColor color = itemStack.get(DataComponents.DYE);
+             if (color != null && color != this.getCollarColor()) {
++                // Paper start - Add EntityDyeEvent and CollarColorable interface
++                final DyeColor originalColor = color;
++                final io.papermc.paper.event.entity.EntityDyeEvent event = new io.papermc.paper.event.entity.EntityDyeEvent(this.getBukkitEntity(), org.bukkit.DyeColor.getByWoolData((byte) color.getId()), (org.bukkit.entity.Player) player.getBukkitEntity());
++                if (!event.callEvent()) {
++                    if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
++                        this.resendPossiblyDesyncedDataValues(java.util.List.of(DATA_COLLAR_COLOR), serverPlayer);
++                    }
++                    if (!player.hasInfiniteMaterials()) {
++                        player.containerMenu.forceHeldSlot(hand);
++                    }
++                    return InteractionResult.FAIL;
++                }
++                color = DyeColor.byId(event.getColor().getWoolData());
++                if (originalColor != color) {
++                    if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
++                        this.resendPossiblyDesyncedDataValues(java.util.List.of(DATA_COLLAR_COLOR), serverPlayer);
++                    }
++                }
++                // Paper end - Add EntityDyeEvent and CollarColorable interface
+                 this.setCollarColor(color);
+                 itemStack.consume(1, player);
+                 return InteractionResult.SUCCESS;
+@@ -507,7 +_,7 @@
+     }
+ 
+     private void tryToTame(final Player player) {
+-        if (this.random.nextInt(3) == 0) {
++        if (this.random.nextInt(3) == 0 && !org.bukkit.craftbukkit.event.CraftEventFactory.callEntityTameEvent(this, player).isCancelled()) { // CraftBukkit - added event call
+             this.tame(player);
+             this.navigation.stop();
+             this.setTarget(null);
+@@ -582,7 +_,7 @@
+         return DyeColor.byId(this.entityData.get(DATA_COLLAR_COLOR));
+     }
+ 
+-    private void setCollarColor(final DyeColor color) {
++    public void setCollarColor(final DyeColor color) {
+         this.entityData.set(DATA_COLLAR_COLOR, color.getId());
+     }
+ 

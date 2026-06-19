@@ -1,0 +1,32 @@
+--- a/net/minecraft/world/entity/animal/fish/Salmon.java
++++ b/net/minecraft/world/entity/animal/fish/Salmon.java
+@@ -52,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.SALMON_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.SALMON_DEATH;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.SALMON_HURT;
+     }
+ 
+@@ -103,7 +_,7 @@
+         bucket.copyFrom(DataComponents.SALMON_SIZE, this);
+     }
+ 
+-    private void setVariant(final Salmon.Variant variant) {
++    public void setVariant(final Salmon.Variant variant) {
+         this.entityData.set(DATA_TYPE, variant.id);
+     }
+ 

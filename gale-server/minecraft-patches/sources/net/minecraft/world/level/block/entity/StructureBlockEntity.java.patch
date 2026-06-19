@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/level/block/entity/StructureBlockEntity.java
++++ b/net/minecraft/world/level/block/entity/StructureBlockEntity.java
+@@ -55,14 +_,14 @@
+     private static final float DEFAULT_INTEGRITY = 1.0F;
+     private static final long DEFAULT_SEED = 0L;
+     private @Nullable Identifier structureName;
+-    private String author = "";
++    public String author = "";
+     private String metaData = "";
+     private BlockPos structurePos = DEFAULT_POS;
+     private Vec3i structureSize = DEFAULT_SIZE;
+     private Mirror mirror = Mirror.NONE;
+     private Rotation rotation = Rotation.NONE;
+-    private StructureMode mode;
+-    private boolean ignoreEntities = true;
++    public StructureMode mode;
++    public boolean ignoreEntities = true;
+     private boolean strict = false;
+     private boolean powered = false;
+     private boolean showAir = false;

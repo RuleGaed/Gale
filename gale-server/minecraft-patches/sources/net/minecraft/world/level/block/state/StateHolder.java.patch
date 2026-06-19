@@ -1,0 +1,150 @@
+--- a/net/minecraft/world/level/block/state/StateHolder.java
++++ b/net/minecraft/world/level/block/state/StateHolder.java
+@@ -13,20 +_,48 @@
+ import net.minecraft.world.level.block.state.properties.Property;
+ import org.jspecify.annotations.Nullable;
+ 
+-public abstract class StateHolder<O, S> {
++public abstract class StateHolder<O, S> implements ca.spottedleaf.moonrise.patches.blockstate_propertyaccess.PropertyAccessStateHolder<O, S> { // Paper - optimise blockstate property access
+     private static final int VALUE_NOT_FOUND = -1;
+     public static final String NAME_TAG = "Name";
+     public static final String PROPERTIES_TAG = "Properties";
+     protected final O owner;
+-    private final Property<?>[] propertyKeys;
+-    private final Comparable<?>[] propertyValues;
++    private Property<?>[] propertyKeys; // Paper - optimise blockstate property access - remove final
++    private Comparable<?>[] propertyValues; // Paper - optimise blockstate property access - remove final
+     private S[][] neighbors;
+ 
++    // Paper start - optimise blockstate property access
++    protected ca.spottedleaf.moonrise.patches.blockstate_propertyaccess.util.ZeroCollidingReferenceStateTable<O, S> optimisedTable;
++    protected final long tableIndex;
++
++    @Override
++    public final long moonrise$getTableIndex() {
++        return this.tableIndex;
++    }
++
++    @Override
++    public final void moonrise$init(final Collection<S> states) {
++        this.optimisedTable.loadInTable(states);
++
++        // de-duplicate the tables and remove values, properties, neighbours arrays
++        for (final S neighbour : states) {
++            ((StateHolder<O, S>)(Object)(StateHolder<O, S>)neighbour).optimisedTable = this.optimisedTable;
++            ((StateHolder<O, S>)(Object)(StateHolder<O, S>)neighbour).propertyKeys = null;
++            ((StateHolder<O, S>)(Object)(StateHolder<O, S>)neighbour).propertyValues = null;
++            ((StateHolder<O, S>)(Object)(StateHolder<O, S>)neighbour).neighbors = null;
++        }
++    }
++    // Paper end - optimise blockstate property access
++
+     protected StateHolder(final O owner, final Property<?>[] propertyKeys, final Comparable<?>[] propertyValues) {
+         assert propertyKeys.length == propertyValues.length;
+         this.owner = owner;
+         this.propertyKeys = propertyKeys;
+         this.propertyValues = propertyValues;
++
++        // Paper start - optimise blockstate property access
++        this.optimisedTable = new ca.spottedleaf.moonrise.patches.blockstate_propertyaccess.util.ZeroCollidingReferenceStateTable<>(propertyKeys);
++        this.tableIndex = this.optimisedTable.getIndex((StateHolder<O, S>)(Object)this, propertyKeys, propertyValues);
++        // Paper end - optimise blockstate property access
+     }
+ 
+     public <T extends Comparable<T>> S cycle(final Property<T> property) {
+@@ -62,7 +_,7 @@
+     }
+ 
+     public Collection<Property<?>> getProperties() {
+-        return List.of(this.propertyKeys);
++        return this.optimisedTable.getProperties(); // Paper - optimise blockstate property access
+     }
+ 
+     private int valueIndex(final Property<?> property) {
+@@ -76,21 +_,21 @@
+     }
+ 
+     public boolean hasProperty(final Property<?> property) {
+-        return this.valueIndex(property) != -1;
++        return property != null && this.optimisedTable.hasProperty(property); // Paper - optimise blockstate property access
+     }
+ 
+     private <T extends Comparable<T>> @Nullable T getNullableValue(final Property<T> property) {
+-        int index = this.valueIndex(property);
+-        return index == -1 ? null : property.getValueClass().cast(this.propertyValues[index]);
++        return property == null ? null : this.optimisedTable.get(this.tableIndex, property); // Paper - optimise blockstate property access
+     }
+ 
+     public <T extends Comparable<T>> T getValue(final Property<T> property) {
+-        T value = this.getNullableValue(property);
+-        if (value == null) {
+-            throw new IllegalArgumentException("Cannot get property " + property + " as it does not exist in " + this.owner);
+-        } else {
+-            return value;
++        // Paper start - optimise blockstate property access
++        final T ret = this.optimisedTable.get(this.tableIndex, property);
++        if (ret != null) {
++            return ret;
+         }
++        throw new IllegalArgumentException("Cannot get property " + property + " as it does not exist in " + this.owner);
++        // Paper end - optimise blockstate property access
+     }
+ 
+     public <T extends Comparable<T>> Optional<T> getOptionalValue(final Property<T> property) {
+@@ -102,17 +_,26 @@
+     }
+ 
+     public <T extends Comparable<T>, V extends T> S setValue(final Property<T> property, final V value) {
+-        int index = this.valueIndex(property);
+-        if (index == -1) {
+-            throw new IllegalArgumentException("Cannot set property " + property + " as it does not exist in " + this.owner);
+-        } else {
+-            return this.setValueInternal(property, index, value);
++        // Paper start - optimise blockstate property access
++        final S ret = this.optimisedTable.set(this.tableIndex, property, value);
++        if (ret != null) {
++            return ret;
+         }
++        throw new IllegalArgumentException("Cannot set property " + property + " to " + value + " on " + this.owner);
++        // Paper end - optimise blockstate property access
+     }
+ 
+     public <T extends Comparable<T>, V extends T> S trySetValue(final Property<T> property, final V value) {
+-        int index = this.valueIndex(property);
+-        return (S)(index == -1 ? this : this.setValueInternal(property, index, value));
++        // Paper start - optimise blockstate property access
++        if (property == null) {
++            return (S)(StateHolder<O, S>)(Object)this;
++        }
++        final S ret = this.optimisedTable.trySet(this.tableIndex, property, value, (S)(StateHolder<O, S>)(Object)this);
++        if (ret != null) {
++            return ret;
++        }
++        throw new IllegalArgumentException("Cannot set property " + property + " to " + value + " on " + this.owner);
++        // Paper end - optimise blockstate property access
+     }
+ 
+     private <T extends Comparable<T>, V extends T> S setValueInternal(final Property<T> property, final int propertyIndex, final V value) {
+@@ -133,15 +_,18 @@
+     }
+ 
+     public boolean isSingletonState() {
+-        return this.propertyKeys.length == 0;
++        return this.optimisedTable.isSingletonState(); // Paper - optimise blockstate property access
+     }
+ 
+     public Stream<Property.Value<?>> getValues() {
+-        int length = this.propertyKeys.length;
+-        return length == 0 ? Stream.empty() : IntStream.range(0, length).mapToObj(i -> createValue(this.propertyKeys[i], this.propertyValues[i]));
++        // Paper start - optimise blockstate property access
++        return this.optimisedTable.getProperties().stream().map((final Property<?> prop) -> {
++            return createValue(prop, StateHolder.this.getValue(prop));
++        });
++        // Paper end - optimise blockstate property access
+     }
+ 
+-    private static <T extends Comparable<T>> Property.Value<T> createValue(final Property<T> propertyKey, final Comparable<?> propertyValue) {
++    public static <T extends Comparable<T>> Property.Value<T> createValue(final Property<T> propertyKey, final Comparable<?> propertyValue) { // Paper - public
+         return new Property.Value<>(propertyKey, (T)propertyValue);
+     }
+ 

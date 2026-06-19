@@ -1,0 +1,58 @@
+--- a/net/minecraft/world/entity/animal/feline/Ocelot.java
++++ b/net/minecraft/world/entity/animal/feline/Ocelot.java
+@@ -73,11 +_,11 @@
+         this.reassessTrustingGoals();
+     }
+ 
+-    private boolean isTrusting() {
++    public boolean isTrusting() {
+         return this.entityData.get(DATA_TRUSTING);
+     }
+ 
+-    private void setTrusting(final boolean trusting) {
++    public void setTrusting(final boolean trusting) {
+         this.entityData.set(DATA_TRUSTING, trusting);
+         this.reassessTrustingGoals();
+     }
+@@ -136,7 +_,7 @@
+ 
+     @Override
+     public boolean removeWhenFarAway(final double distSqr) {
+-        return !this.isTrusting() && this.tickCount > 2400;
++        return !this.isTrusting() && this.tickCount > 2400 && !this.hasCustomName() && !this.isLeashed(); // Paper - honor name and leash
+     }
+ 
+     public static AttributeSupplier.Builder createAttributes() {
+@@ -144,7 +_,7 @@
+     }
+ 
+     @Override
+-    protected @Nullable SoundEvent getAmbientSound() {
++    public @Nullable SoundEvent getAmbientSound() {
+         return SoundEvents.OCELOT_AMBIENT;
+     }
+ 
+@@ -154,12 +_,12 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.OCELOT_HURT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.OCELOT_DEATH;
+     }
+ 
+@@ -169,7 +_,7 @@
+         if ((this.temptGoal == null || this.temptGoal.isRunning()) && !this.isTrusting() && this.isFood(itemStack) && player.distanceToSqr(this) < 9.0) {
+             this.usePlayerItem(player, hand, itemStack);
+             if (!this.level().isClientSide()) {
+-                if (this.random.nextInt(3) == 0) {
++                if (this.random.nextInt(3) == 0 && !org.bukkit.craftbukkit.event.CraftEventFactory.callEntityTameEvent(this, player).isCancelled()) { // CraftBukkit - added event call and isCancelled check
+                     this.setTrusting(true);
+                     this.spawnTrustingParticles(true);
+                     this.level().broadcastEntityEvent(this, EntityEvent.TRUSTING_SUCCEEDED);

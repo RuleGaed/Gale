@@ -1,0 +1,42 @@
+--- a/net/minecraft/resources/RegistryOps.java
++++ b/net/minecraft/resources/RegistryOps.java
+@@ -16,7 +_,7 @@
+ import net.minecraft.util.ExtraCodecs;
+ 
+ public class RegistryOps<T> extends DelegatingOps<T> {
+-    private final RegistryOps.RegistryInfoLookup lookupProvider;
++    public final RegistryOps.RegistryInfoLookup lookupProvider;
+ 
+     public static <T> RegistryOps<T> create(final DynamicOps<T> parent, final HolderLookup.Provider lookupProvider) {
+         return create(parent, new RegistryOps.HolderLookupAdapter(lookupProvider));
+@@ -90,7 +_,7 @@
+             .forGetter(e -> null);
+     }
+ 
+-    private static final class HolderLookupAdapter implements RegistryOps.RegistryInfoLookup {
++    public static final class HolderLookupAdapter implements RegistryOps.RegistryInfoLookup {
+         private final HolderLookup.Provider lookupProvider;
+         private final Map<ResourceKey<? extends Registry<?>>, Optional<? extends RegistryOps.RegistryInfo<?>>> lookups = new ConcurrentHashMap<>();
+ 
+@@ -116,6 +_,13 @@
+         public int hashCode() {
+             return this.lookupProvider.hashCode();
+         }
++
++        // Paper start - add method to get the value for pre-filling builders in the reg mod API
++        @Override
++        public HolderLookup.Provider lookupForValueCopyViaBuilders() {
++            return this.lookupProvider;
++        }
++        // Paper end - add method to get the value for pre-filling builders in the reg mod API
+     }
+ 
+     public record RegistryInfo<T>(HolderOwner<T> owner, HolderGetter<T> getter, Lifecycle elementsLifecycle) {
+@@ -126,5 +_,7 @@
+ 
+     public interface RegistryInfoLookup {
+         <T> Optional<RegistryOps.RegistryInfo<T>> lookup(ResourceKey<? extends Registry<? extends T>> registryKey);
++
++        HolderLookup.Provider lookupForValueCopyViaBuilders(); // Paper - add method to get the value for pre-filling builders in the reg mod API
+     }
+ }

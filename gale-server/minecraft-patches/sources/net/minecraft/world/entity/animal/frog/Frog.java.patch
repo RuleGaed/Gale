@@ -1,0 +1,46 @@
+--- a/net/minecraft/world/entity/animal/frog/Frog.java
++++ b/net/minecraft/world/entity/animal/frog/Frog.java
+@@ -136,7 +_,7 @@
+         return this.entityData.get(DATA_VARIANT_ID);
+     }
+ 
+-    private void setVariant(final Holder<FrogVariant> variant) {
++    public void setVariant(final Holder<FrogVariant> variant) {
+         this.entityData.set(DATA_VARIANT_ID, variant);
+     }
+ 
+@@ -254,7 +_,12 @@
+ 
+     @Override
+     public void spawnChildFromBreeding(final ServerLevel level, final Animal partner) {
+-        this.finalizeSpawnChildFromBreeding(level, partner, null);
++        // Paper start - Add EntityFertilizeEggEvent event
++        final io.papermc.paper.event.entity.EntityFertilizeEggEvent result = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityFertilizeEggEvent(this, partner);
++        if (result.isCancelled()) return;
++
++        this.finalizeSpawnChildFromBreeding(level, partner, null, result.getExperience()); // Paper - use craftbukkit call that takes experience amount
++        // Paper end - Add EntityFertilizeEggEvent event
+         this.getBrain().setMemory(MemoryModuleType.IS_PREGNANT, Unit.INSTANCE);
+     }
+ 
+@@ -276,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected @Nullable SoundEvent getAmbientSound() {
++    public @Nullable SoundEvent getAmbientSound() {
+         return SoundEvents.FROG_AMBIENT;
+     }
+ 
+     @Override
+-    protected @Nullable SoundEvent getHurtSound(final DamageSource source) {
++    public @Nullable SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.FROG_HURT;
+     }
+ 
+     @Override
+-    protected @Nullable SoundEvent getDeathSound() {
++    public @Nullable SoundEvent getDeathSound() {
+         return SoundEvents.FROG_DEATH;
+     }
+ 

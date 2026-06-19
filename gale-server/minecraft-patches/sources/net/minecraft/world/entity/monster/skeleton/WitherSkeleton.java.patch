@@ -1,0 +1,40 @@
+--- a/net/minecraft/world/entity/monster/skeleton/WitherSkeleton.java
++++ b/net/minecraft/world/entity/monster/skeleton/WitherSkeleton.java
+@@ -41,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.WITHER_SKELETON_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.WITHER_SKELETON_HURT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.WITHER_SKELETON_DEATH;
+     }
+ 
+@@ -96,7 +_,7 @@
+         }
+ 
+         if (target instanceof LivingEntity livingEntity) {
+-            livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 200), this);
++            livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 200), this, org.bukkit.event.entity.EntityPotionEffectEvent.Cause.ATTACK); // CraftBukkit
+         }
+ 
+         return true;
+@@ -111,6 +_,6 @@
+ 
+     @Override
+     public boolean canBeAffected(final MobEffectInstance newEffect) {
+-        return !newEffect.is(MobEffects.WITHER) && super.canBeAffected(newEffect);
++        return (!newEffect.is(MobEffects.WITHER) || !this.level().paperConfig().entities.mobEffects.immuneToWitherEffect.witherSkeleton) && super.canBeAffected(newEffect); // Paper - Add config for mobs immune to default effects
+     }
+ }

@@ -1,0 +1,35 @@
+--- a/net/minecraft/world/entity/monster/breeze/Breeze.java
++++ b/net/minecraft/world/entity/monster/breeze/Breeze.java
+@@ -203,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.BREEZE_DEATH;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.BREEZE_HURT;
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return this.onGround() ? SoundEvents.BREEZE_IDLE_GROUND : SoundEvents.BREEZE_IDLE_AIR;
+     }
+ 
+@@ -243,6 +_,11 @@
+ 
+     @Override
+     public boolean canAttack(final LivingEntity target) {
++        // TODO - snapshot - reimplement but without reintroducing MC-199589
++        // CraftBukkit start - SPIGOT-7957: Allow attack if target from brain was set
++        // LivingEntity targetFromBrain = this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
++        // if (targetFromBrain != null) return target.is(targetFromBrain);
++        // CraftBukkit end
+         return (target.is(EntityTypes.PLAYER) || target.is(EntityTypes.IRON_GOLEM)) && super.canAttack(target);
+     }
+ 

@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/level/ServerBossEvent.java
++++ b/net/minecraft/server/level/ServerBossEvent.java
+@@ -90,7 +_,7 @@
+         }
+     }
+ 
+-    private void broadcast(final Function<BossEvent, ClientboundBossEventPacket> factory) {
++    public void broadcast(final Function<BossEvent, ClientboundBossEventPacket> factory) {
+         if (this.visible) {
+             ClientboundBossEventPacket packet = factory.apply(this);
+ 

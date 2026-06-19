@@ -1,0 +1,63 @@
+--- a/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
++++ b/net/minecraft/world/entity/animal/happyghast/HappyGhast.java
+@@ -218,22 +_,22 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return this.isBaby() ? SoundEvents.GHASTLING_AMBIENT : SoundEvents.HAPPY_GHAST_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return this.isBaby() ? SoundEvents.GHASTLING_HURT : SoundEvents.HAPPY_GHAST_HURT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return this.isBaby() ? SoundEvents.GHASTLING_DEATH : SoundEvents.HAPPY_GHAST_DEATH;
+     }
+ 
+     @Override
+-    protected float getSoundVolume() {
++    public float getSoundVolume() {
+         return this.isBaby() ? 1.0F : 4.0F;
+     }
+ 
+@@ -308,7 +_,7 @@
+     @Override
+     protected void addPassenger(final Entity passenger) {
+         if (!this.isVehicle()) {
+-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.HARNESS_GOGGLES_DOWN, this.getSoundSource(), 1.0F, 1.0F);
++            this.playSound(SoundEvents.HARNESS_GOGGLES_DOWN, 1.0F, 1.0F); // Paper - don't play sound if silenced (Fixes MC-297169)
+         }
+ 
+         super.addPassenger(passenger);
+@@ -322,16 +_,21 @@
+     }
+ 
+     @Override
+-    protected void removePassenger(final Entity passenger) {
+-        super.removePassenger(passenger);
++    // Paper start - cancellable passengers
++    protected boolean removePassenger(final Entity passenger, final boolean suppressCancellation) {
++        if (!super.removePassenger(passenger, suppressCancellation)) {
++            return false;
++        }
++        // Paper end - cancellable passengers
+         if (!this.level().isClientSide()) {
+             this.setServerStillTimeout(10);
+         }
+ 
+         if (!this.isVehicle()) {
+             this.clearHome();
+-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.HARNESS_GOGGLES_UP, this.getSoundSource(), 1.0F, 1.0F);
++            this.playSound(SoundEvents.HARNESS_GOGGLES_UP, 1.0F, 1.0F); // Paper - don't play sound if silenced (Fixes MC-297169)
+         }
++        return true; // Paper - cancellable passengers
+     }
+ 
+     @Override

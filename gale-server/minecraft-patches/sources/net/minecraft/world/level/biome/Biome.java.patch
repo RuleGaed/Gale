@@ -1,0 +1,44 @@
+--- a/net/minecraft/world/level/biome/Biome.java
++++ b/net/minecraft/world/level/biome/Biome.java
+@@ -65,7 +_,7 @@
+     @Deprecated(forRemoval = true)
+     public static final PerlinSimplexNoise BIOME_INFO_NOISE = new PerlinSimplexNoise(new WorldgenRandom(new LegacyRandomSource(2345L)), ImmutableList.of(0));
+     private static final int TEMPERATURE_CACHE_SIZE = 1024;
+-    private final Biome.ClimateSettings climateSettings;
++    public final Biome.ClimateSettings climateSettings;
+     private final BiomeGenerationSettings generationSettings;
+     private final MobSpawnSettings mobSettings;
+     private final EnvironmentAttributeMap attributes;
+@@ -122,21 +_,8 @@
+     }
+ 
+     @Deprecated
+-    private float getTemperature(final BlockPos pos, final int seaLevel) {
+-        long key = pos.asLong();
+-        Long2FloatLinkedOpenHashMap cache = this.temperatureCache.get();
+-        float cached = cache.get(key);
+-        if (!Float.isNaN(cached)) {
+-            return cached;
+-        }
+-
+-        float temp = this.getHeightAdjustedTemperature(pos, seaLevel);
+-        if (cache.size() == 1024) {
+-            cache.removeFirstFloat();
+-        }
+-
+-        cache.put(key, temp);
+-        return temp;
++    public float getTemperature(final BlockPos pos, final int seaLevel) {
++        return this.getHeightAdjustedTemperature(pos, seaLevel); // Paper - optimise random ticking
+     }
+ 
+     public boolean shouldFreeze(final LevelReader level, final BlockPos pos) {
+@@ -356,7 +_,7 @@
+         }
+     }
+ 
+-    private record ClimateSettings(boolean hasPrecipitation, float temperature, Biome.TemperatureModifier temperatureModifier, float downfall) {
++    public record ClimateSettings(boolean hasPrecipitation, float temperature, Biome.TemperatureModifier temperatureModifier, float downfall) {
+         public static final MapCodec<Biome.ClimateSettings> CODEC = RecordCodecBuilder.mapCodec(
+             i -> i.group(
+                     Codec.BOOL.fieldOf("has_precipitation").forGetter(b -> b.hasPrecipitation),

@@ -1,0 +1,14 @@
+--- /dev/null
++++ b/ca/spottedleaf/moonrise/patches/blockstate_propertyaccess/PropertyAccessStateHolder.java
+@@ -1,0 +_,11 @@
++package ca.spottedleaf.moonrise.patches.blockstate_propertyaccess;
++
++import java.util.Collection;
++
++public interface PropertyAccessStateHolder<O, S> {
++
++    public long moonrise$getTableIndex();
++
++    public void moonrise$init(final Collection<S> states);
++
++}

@@ -1,0 +1,42 @@
+--- a/net/minecraft/world/entity/monster/illager/Evoker.java
++++ b/net/minecraft/world/entity/monster/illager/Evoker.java
+@@ -99,25 +_,25 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.EVOKER_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.EVOKER_DEATH;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.EVOKER_HURT;
+     }
+ 
+-    private void setWololoTarget(final @Nullable Sheep wololoTarget) {
++    public void setWololoTarget(final @Nullable Sheep wololoTarget) {
+         this.wololoTarget = wololoTarget;
+     }
+ 
+-    private @Nullable Sheep getWololoTarget() {
++    public @Nullable Sheep getWololoTarget() {
+         return this.wololoTarget;
+     }
+ 
+@@ -268,7 +_,7 @@
+                         serverLevel.getScoreboard().addPlayerToTeam(vex.getScoreboardName(), evokerTeam);
+                     }
+ 
+-                    serverLevel.addFreshEntityWithPassengers(vex);
++                    serverLevel.addFreshEntityWithPassengers(vex, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SPELL); // CraftBukkit - Add SpawnReason
+                     serverLevel.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(Evoker.this));
+                 }
+             }

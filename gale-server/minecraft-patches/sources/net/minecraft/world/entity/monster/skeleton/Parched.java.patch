@@ -1,0 +1,23 @@
+--- a/net/minecraft/world/entity/monster/skeleton/Parched.java
++++ b/net/minecraft/world/entity/monster/skeleton/Parched.java
+@@ -34,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.PARCHED_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.PARCHED_HURT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.PARCHED_DEATH;
+     }
+ 

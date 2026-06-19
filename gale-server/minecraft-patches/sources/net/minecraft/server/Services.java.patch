@@ -1,27 +1,55 @@
 --- a/net/minecraft/server/Services.java
 +++ b/net/minecraft/server/Services.java
-@@ -25,7 +_,8 @@
-     // Paper start - add paper configuration files
-     public record PaperServices(
-         io.papermc.paper.configuration.PaperConfigurations configurations,
--        io.papermc.paper.profile.PaperFilledProfileCache filledProfileCache
+@@ -18,15 +_,46 @@
+     GameProfileRepository profileRepository,
+     UserNameToIdResolver nameToIdCache,
+     ProfileResolver profileResolver
++    , @Nullable PaperServices paper // Paper
+ ) {
+-    private static final String USERID_CACHE_FILE = "usercache.json";
+-
+-    public static Services create(final YggdrasilAuthenticationService serviceAccess, final File nameCacheDir) {
++    public static final String USERID_CACHE_FILE = "usercache.json";
++
++    // Paper start - add paper configuration files
++    public record PaperServices(
++        io.papermc.paper.configuration.PaperConfigurations configurations,
 +        io.papermc.paper.profile.PaperFilledProfileCache filledProfileCache,
 +        org.galemc.gale.configuration.GaleConfigurations galeConfigurations // Gale
-     ) {}
- 
-     public Services(MinecraftSessionService sessionService, ServicesKeySet servicesKeySet, GameProfileRepository profileRepository, UserNameToIdResolver nameToIdCache, ProfileResolver profileResolver) {
-@@ -46,9 +_,13 @@
-         final java.nio.file.Path legacyConfigPath = ((File) options.valueOf("paper-settings")).toPath();
-         final java.nio.file.Path configDirPath = ((File) options.valueOf("paper-settings-directory")).toPath();
-         io.papermc.paper.configuration.PaperConfigurations paperConfigurations = io.papermc.paper.configuration.PaperConfigurations.setup(legacyConfigPath, configDirPath, nameCacheDir.toPath(), (File) options.valueOf("spigot-settings"));
++    ) {}
++
++    public Services(MinecraftSessionService sessionService, ServicesKeySet servicesKeySet, GameProfileRepository profileRepository, UserNameToIdResolver nameToIdCache, ProfileResolver profileResolver) {
++        this(sessionService, servicesKeySet, profileRepository, nameToIdCache, profileResolver, null);
++    }
++
++    @Override
++    public PaperServices paper() {
++        return java.util.Objects.requireNonNull(this.paper);
++    }
++    // Paper end - add paper configuration files
++
++    public static Services create(final YggdrasilAuthenticationService serviceAccess, final File nameCacheDir, final File userCacheFile, final joptsimple.OptionSet options) throws Exception { // Paper - add options to load paper config files; add userCacheFile parameter
+         MinecraftSessionService sessionService = serviceAccess.createMinecraftSessionService();
+         GameProfileRepository profileRepository = serviceAccess.createProfileRepository();
+-        UserNameToIdResolver profileCache = new CachedUserNameToIdResolver(profileRepository, new File(nameCacheDir, "usercache.json"));
+-        ProfileResolver profileResolver = new ProfileResolver.Cached(sessionService, profileCache);
+-        return new Services(sessionService, serviceAccess.getServicesKeySet(), profileRepository, profileCache, profileResolver);
++        UserNameToIdResolver profileCache = new CachedUserNameToIdResolver(profileRepository, userCacheFile); // Paper
++        // Paper start - load paper config files from cli options
++        final java.nio.file.Path legacyConfigPath = ((File) options.valueOf("paper-settings")).toPath();
++        final java.nio.file.Path configDirPath = ((File) options.valueOf("paper-settings-directory")).toPath();
++        io.papermc.paper.configuration.PaperConfigurations paperConfigurations = io.papermc.paper.configuration.PaperConfigurations.setup(legacyConfigPath, configDirPath, nameCacheDir.toPath(), (File) options.valueOf("spigot-settings"));
 +        // Gale start - add gale configuration files
 +        org.galemc.gale.configuration.GaleConfigurations galeConfigurations = org.galemc.gale.configuration.GaleConfigurations.setup(legacyConfigPath);
 +        // Gale end - add gale configuration files
-         PaperServices paperServices = new PaperServices(
-             paperConfigurations,
--            new io.papermc.paper.profile.PaperFilledProfileCache()
++        PaperServices paperServices = new PaperServices(
++            paperConfigurations,
 +            new io.papermc.paper.profile.PaperFilledProfileCache(),
 +            galeConfigurations
-         );
-         ProfileResolver profileResolver = new ProfileResolver.Cached(sessionService, profileCache, paperServices.filledProfileCache());
-         return new Services(sessionService, serviceAccess.getServicesKeySet(), profileRepository, profileCache, profileResolver, paperServices);
++        );
++        ProfileResolver profileResolver = new ProfileResolver.Cached(sessionService, profileCache, paperServices.filledProfileCache());
++        return new Services(sessionService, serviceAccess.getServicesKeySet(), profileRepository, profileCache, profileResolver, paperServices);
++        // Paper end - load paper config files from cli options
+     }
+ 
+     public @Nullable SignatureValidator profileKeySignatureValidator() {

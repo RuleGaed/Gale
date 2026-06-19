@@ -1,0 +1,50 @@
+--- a/net/minecraft/world/entity/monster/Endermite.java
++++ b/net/minecraft/world/entity/monster/Endermite.java
+@@ -29,7 +_,7 @@
+ public class Endermite extends Monster {
+     private static final int MAX_LIFE = 2400;
+     private static final int DEFAULT_LIFE = 0;
+-    private int life = 0;
++    public int life = 0;
+ 
+     public Endermite(final EntityType<? extends Endermite> type, final Level level) {
+         super(type, level);
+@@ -58,17 +_,17 @@
+     }
+ 
+     @Override
+-    protected SoundEvent getAmbientSound() {
++    public SoundEvent getAmbientSound() {
+         return SoundEvents.ENDERMITE_AMBIENT;
+     }
+ 
+     @Override
+-    protected SoundEvent getHurtSound(final DamageSource source) {
++    public SoundEvent getHurtSound(final DamageSource source) {
+         return SoundEvents.ENDERMITE_HURT;
+     }
+ 
+     @Override
+-    protected SoundEvent getDeathSound() {
++    public SoundEvent getDeathSound() {
+         return SoundEvents.ENDERMITE_DEATH;
+     }
+ 
+@@ -123,7 +_,7 @@
+             }
+ 
+             if (this.life >= 2400) {
+-                this.discard();
++                this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DESPAWN); // CraftBukkit - add Bukkit remove cause
+             }
+         }
+     }
+@@ -139,7 +_,7 @@
+             return true;
+         }
+ 
+-        Player nearestPlayer = level.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 5.0, true);
++        Player nearestPlayer = level.getNearestPlayerThatAffectsSpawning(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 5.0, true); // Paper - Affects Spawning API
+         return nearestPlayer == null;
+     }
+ }

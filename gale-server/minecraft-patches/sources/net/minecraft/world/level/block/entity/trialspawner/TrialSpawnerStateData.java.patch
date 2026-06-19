@@ -1,0 +1,29 @@
+--- a/net/minecraft/world/level/block/entity/trialspawner/TrialSpawnerStateData.java
++++ b/net/minecraft/world/level/block/entity/trialspawner/TrialSpawnerStateData.java
+@@ -44,12 +_,12 @@
+     private static final String TAG_NEXT_MOB_SPAWNS_AT = "next_mob_spawns_at";
+     private static final int DELAY_BETWEEN_PLAYER_SCANS = 20;
+     private static final int TRIAL_OMEN_PER_BAD_OMEN_LEVEL = 18000;
+-    final Set<UUID> detectedPlayers = new HashSet<>();
+-    final Set<UUID> currentMobs = new HashSet<>();
+-    long cooldownEndsAt;
+-    long nextMobSpawnsAt;
++    public final Set<UUID> detectedPlayers = new HashSet<>();
++    public final Set<UUID> currentMobs = new HashSet<>();
++    public long cooldownEndsAt;
++    public long nextMobSpawnsAt;
+     int totalMobsSpawned;
+-    Optional<SpawnData> nextSpawnData = Optional.empty();
++    public Optional<SpawnData> nextSpawnData = Optional.empty();
+     Optional<ResourceKey<LootTable>> ejectingLootTable = Optional.empty();
+     private @Nullable Entity displayEntity;
+     private @Nullable WeightedList<ItemStack> dispensing;
+@@ -188,7 +_,7 @@
+                     mob.dropPreservedEquipment(level);
+                 }
+ 
+-                entity.remove(Entity.RemovalReason.DISCARDED);
++                entity.remove(Entity.RemovalReason.DISCARDED, org.bukkit.event.entity.EntityRemoveEvent.Cause.DESPAWN); // CraftBukkit - Add bukkit remove cause;
+             }
+         });
+         if (!trialSpawner.ominousConfig().spawnPotentialsDefinition().isEmpty()) {

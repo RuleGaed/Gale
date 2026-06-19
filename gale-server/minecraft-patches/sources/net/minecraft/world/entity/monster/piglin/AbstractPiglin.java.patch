@@ -1,0 +1,39 @@
+--- a/net/minecraft/world/entity/monster/piglin/AbstractPiglin.java
++++ b/net/minecraft/world/entity/monster/piglin/AbstractPiglin.java
+@@ -30,7 +_,7 @@
+     private static final boolean DEFAULT_IMMUNE_TO_ZOMBIFICATION = false;
+     private static final boolean DEFAULT_PICK_UP_LOOT = true;
+     private static final int DEFAULT_TIME_IN_OVERWORLD = 0;
+-    protected int timeInOverworld = 0;
++    public int timeInOverworld = 0;
+ 
+     public AbstractPiglin(final EntityType<? extends AbstractPiglin> type, final Level level) {
+         super(type, level);
+@@ -52,7 +_,7 @@
+         this.getEntityData().set(DATA_IMMUNE_TO_ZOMBIFICATION, isImmuneToZombification);
+     }
+ 
+-    protected boolean isImmuneToZombification() {
++    public boolean isImmuneToZombification() {
+         return this.getEntityData().get(DATA_IMMUNE_TO_ZOMBIFICATION);
+     }
+ 
+@@ -107,11 +_,16 @@
+     }
+ 
+     protected void finishConversion(final ServerLevel level) {
+-        this.convertTo(
++        net.minecraft.world.entity.Entity converted = this.convertTo( // Paper - Fix issues with mob conversion; reset to prevent event spam
+             EntityTypes.ZOMBIFIED_PIGLIN,
+             ConversionParams.single(this, true, true),
+-            zombified -> zombified.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200, 0))
++            zombified -> {zombified.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200, 0));}, org.bukkit.event.entity.EntityTransformEvent.TransformReason.PIGLIN_ZOMBIFIED, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.PIGLIN_ZOMBIFIED // CraftBukkit - add spawn and transform reasons
+         );
++        // Paper start - Fix issues with mob conversion; reset to prevent event spam
++        if (converted == null) {
++            this.timeInOverworld = 0;
++        }
++        // Paper end - Fix issues with mob conversion
+     }
+ 
+     public boolean isAdult() {

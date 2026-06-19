@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/level/block/BaseEntityBlock.java
++++ b/net/minecraft/world/level/block/BaseEntityBlock.java
+@@ -27,7 +_,7 @@
+     }
+ 
+     @Override
+-    protected @Nullable MenuProvider getMenuProvider(final BlockState state, final Level level, final BlockPos pos) {
++    public @Nullable MenuProvider getMenuProvider(final BlockState state, final Level level, final BlockPos pos) {
+         return level.getBlockEntity(pos) instanceof MenuProvider menuProvider ? menuProvider : null;
+     }
+ 

@@ -1,0 +1,20 @@
+--- a/net/minecraft/world/entity/vehicle/minecart/MinecartFurnace.java
++++ b/net/minecraft/world/entity/vehicle/minecart/MinecartFurnace.java
+@@ -28,7 +_,7 @@
+     private static final int MAX_FUEL_TICKS = 32000;
+     private static final short DEFAULT_FUEL = 0;
+     private static final Vec3 DEFAULT_PUSH = Vec3.ZERO;
+-    private int fuel = 0;
++    public int fuel = 0;
+     public Vec3 push = DEFAULT_PUSH;
+ 
+     public MinecartFurnace(final EntityType<? extends MinecartFurnace> type, final Level level) {
+@@ -72,7 +_,7 @@
+     }
+ 
+     @Override
+-    protected Item getDropItem() {
++    public Item getDropItem() {
+         return Items.FURNACE_MINECART;
+     }
+ 
