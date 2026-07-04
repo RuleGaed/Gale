@@ -1,6 +1,6 @@
 --- a/net/minecraft/world/phys/shapes/CubePointRange.java
 +++ b/net/minecraft/world/phys/shapes/CubePointRange.java
-@@ -4,6 +_,8 @@
+@@ -4,6 +_,8 @@ import it.unimi.dsi.fastutil.doubles.AbstractDoubleList;
 
  public class CubePointRange extends AbstractDoubleList {
      private final int parts;
@@ -9,7 +9,7 @@
 
      public CubePointRange(final int parts) {
          if (parts <= 0) {
-@@ -11,15 +_,17 @@
+@@ -11,15 +_,17 @@ public class CubePointRange extends AbstractDoubleList {
          }
 
          this.parts = parts;
