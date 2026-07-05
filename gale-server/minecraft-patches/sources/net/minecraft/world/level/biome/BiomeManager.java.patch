@@ -1,24 +1,50 @@
 --- a/net/minecraft/world/level/biome/BiomeManager.java
 +++ b/net/minecraft/world/level/biome/BiomeManager.java
-@@ -101,7 +_,20 @@
-     }
- 
-     private static double getFiddle(final long rval) {
--        return (double)(((rval >> 24) & (1024 - 1)) - (1024/2)) * (0.9 / 1024.0); // Paper - avoid floorMod, fp division, and fp subtraction
-+        // Gale start - Pre-compute - BiomeManager.getFiddle()
-+        return PRECOMPUTED_FIDDLE_TABLE[(int) (rval >>> 24) & 1023];
-+    }
+@@ -15,6 +_,13 @@
+     private final BiomeManager.NoiseBiomeSource noiseBiomeSource;
+     private final long biomeZoomSeed;
+
++    // Gale start - cache biome lookups
++    private int lastBiomeX = Integer.MIN_VALUE;
++    private int lastBiomeY = Integer.MIN_VALUE;
++    private int lastBiomeZ = Integer.MIN_VALUE;
++    private Holder<Biome> lastBiomeResult;
++    // Gale end - cache biome lookups
 +
-+    private static final double[] PRECOMPUTED_FIDDLE_TABLE = new double[1024];
-+    static {
-+        for (int i = 0; i < 1024; i++) {
-+            PRECOMPUTED_FIDDLE_TABLE[i] = precomputeFiddle(i);
+     public BiomeManager(final BiomeManager.NoiseBiomeSource noiseBiomeSource, final long seed) {
+         this.noiseBiomeSource = noiseBiomeSource;
+         this.biomeZoomSeed = seed;
+@@ -29,8 +_,16 @@
+ 
+     public Holder<Biome> getBiome(final BlockPos pos) {
+-        int absX = pos.getX() - 2;
+-        int absY = pos.getY() - 2;
+-        int absZ = pos.getZ() - 2;
++        // Gale start - cache biome lookups
++        final int x = pos.getX();
++        final int y = pos.getY();
++        final int z = pos.getZ();
++        if (x == this.lastBiomeX && y == this.lastBiomeY && z == this.lastBiomeZ) {
++            return this.lastBiomeResult;
 +        }
-+    }
-+
-+    private static double precomputeFiddle(final int i) {
-+        // Gale end - Pre-compute - BiomeManager.getFiddle()
-+        return (double)(i - (1024/2)) * (0.9 / 1024.0); // Paper - avoid floorMod, fp division, and fp subtraction
++        // Gale end - cache biome lookups
++        int absX = x - 2;
++        int absY = y - 2;
++        int absZ = z - 2;
+         int parentX = absX >> 2;
+         int parentY = absY >> 2;
+         int parentZ = absZ >> 2;
+@@ -61,7 +_,14 @@
+         int biomeX = (minI & 4) == 0 ? parentX : parentX + 1;
+         int biomeY = (minI & 2) == 0 ? parentY : parentY + 1;
+         int biomeZ = (minI & 1) == 0 ? parentZ : parentZ + 1;
+-        return this.noiseBiomeSource.getNoiseBiome(biomeX, biomeY, biomeZ);
++        // Gale start - cache biome lookups
++        final Holder<Biome> result = this.noiseBiomeSource.getNoiseBiome(biomeX, biomeY, biomeZ);
++        this.lastBiomeX = x;
++        this.lastBiomeY = y;
++        this.lastBiomeZ = z;
++        this.lastBiomeResult = result;
++        return result;
++        // Gale end - cache biome lookups
      }
- 
-     public interface NoiseBiomeSource {
