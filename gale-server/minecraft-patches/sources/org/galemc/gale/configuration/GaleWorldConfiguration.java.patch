@@ -1,0 +1,8 @@
+--- a/org/galemc/gale/configuration/GaleWorldConfiguration.java
++++ b/org/galemc/gale/configuration/GaleWorldConfiguration.java
+@@ -34,4 +_,5 @@
+     public class SmallOptimizations extends ConfigurationPart {
+ 
+         public boolean saveFireworks = true; // Gale - EMC - make saving fireworks configurable
++        public boolean entityPushSpatialGrid = true; // Gale - entity push spatial grid
+         public boolean useOptimizedSheepOffspringColor = true; // Gale - carpet-fixes - optimize sheep offspring color
