@@ -1,0 +1,10 @@
+--- a/net/minecraft/world/level/block/FallingBlock.java
++++ b/net/minecraft/world/level/block/FallingBlock.java
+@@ -61,7 +_,7 @@
+ 
+     public static boolean isFree(final BlockState state) {
+-        return state.isAir() || state.is(BlockTags.FIRE) || state.liquid() || state.canBeReplaced();
++        return state.isAir() || state.isAny(BlockMasks.FIRE_TAG) || state.liquid() || state.canBeReplaced(); // Gale - Pre-compute - BlockTags.FIRE
+     }
+ 
+     @Override

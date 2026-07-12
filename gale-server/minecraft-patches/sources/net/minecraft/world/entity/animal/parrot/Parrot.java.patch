@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/parrot/Parrot.java
++++ b/net/minecraft/world/entity/animal/parrot/Parrot.java
+@@ -510,7 +_,7 @@
+             )) {
+                 if (!mobPos.equals(pos)) {
+                     BlockState state = this.mob.level().getBlockState(belowPos.setWithOffset(pos, Direction.DOWN));
+-                    boolean canSitOn = state.getBlock() instanceof LeavesBlock || state.is(BlockTags.LOGS);
++                    boolean canSitOn = state.getBlock() instanceof LeavesBlock || state.isAny(BlockMasks.LOGS_TAG); // Gale - Pre-compute - BlockTags.LOGS
+                     if (canSitOn && this.mob.level().isEmptyBlock(pos) && this.mob.level().isEmptyBlock(abovePos.setWithOffset(pos, Direction.UP))) {
+                         return Vec3.atBottomCenterOf(pos);
+                     }

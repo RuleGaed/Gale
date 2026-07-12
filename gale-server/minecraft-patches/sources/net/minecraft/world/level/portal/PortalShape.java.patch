@@ -1,0 +1,10 @@
+--- a/net/minecraft/world/level/portal/PortalShape.java
++++ b/net/minecraft/world/level/portal/PortalShape.java
+@@ -191,7 +_,7 @@
+ 
+     private static boolean isEmpty(final BlockState state) {
+-        return state.isAir() || state.is(BlockTags.FIRE) || state.is(Blocks.NETHER_PORTAL);
++        return state.isAir() || state.isAny(BlockMasks.FIRE_TAG) || state.is(Blocks.NETHER_PORTAL); // Gale - Pre-compute - BlockTags.FIRE
+     }
+ 
+     public boolean isValid() {

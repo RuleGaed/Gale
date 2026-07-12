@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/SpawnUtil.java
++++ b/net/minecraft/util/SpawnUtil.java
+@@ -133,7 +_,7 @@
+             && Block.isFaceFull(blockState.getCollisionShape(level, pos), Direction.UP);
+         SpawnUtil.Strategy ON_TOP_OF_COLLIDER_NO_LEAVES = (level, pos, blockState, abovePos, aboveState) -> aboveState.getCollisionShape(level, abovePos)
+                 .isEmpty()
+-            && !blockState.is(BlockTags.LEAVES)
++            && !blockState.isAny(BlockMasks.LEAVES_TAG) // Gale - Pre-compute - BlockTags.LEAVES
+             && Block.isFaceFull(blockState.getCollisionShape(level, pos), Direction.UP);
+ 
+         boolean canSpawnOn(ServerLevel level, BlockPos pos, BlockState blockState, BlockPos abovePos, BlockState aboveState);

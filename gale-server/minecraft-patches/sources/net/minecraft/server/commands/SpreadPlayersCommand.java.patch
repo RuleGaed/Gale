@@ -1,11 +1,11 @@
 --- a/net/minecraft/server/commands/SpreadPlayersCommand.java
 +++ b/net/minecraft/server/commands/SpreadPlayersCommand.java
-@@ -114,7 +_,7 @@
-             throw ERROR_INVALID_MAX_HEIGHT.create(maxHeight, minY);
+@@ -365,7 +_,7 @@
+         public boolean isSafe(final BlockGetter level, final int maxHeight) {
+             BlockPos pos = BlockPos.containing(this.x, this.getSpawnY(level, maxHeight) - 1, this.z);
+             BlockState state = level.getBlockState(pos);
+-            return pos.getY() < maxHeight && !state.liquid() && !state.is(BlockTags.FIRE);
++            return pos.getY() < maxHeight && !state.liquid() && !state.isAny(BlockMasks.FIRE_TAG); // Gale - Pre-compute - BlockTags.FIRE
          }
  
--        RandomSource random = RandomSource.createThreadLocalInstance();
-+        RandomSource random = level.getRandom(); // Gale - Reduce allocations - RandomSource
-         double minX = center.x - maxRange;
-         double minZ = center.y - maxRange;
-         double maxX = center.x + maxRange;
+         public void randomize(final RandomSource random, final double minX, final double minZ, final double maxX, final double maxZ) {

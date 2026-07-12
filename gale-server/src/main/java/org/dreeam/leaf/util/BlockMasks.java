@@ -135,6 +135,21 @@ public final class BlockMasks {
     public static final int RAILS_TAG_AND_BASE_RAIL_CLASS = 1 << 21;
 
     /**
+     * {@link BlockTags#LEAVES}.
+     */
+    public static final int LEAVES_TAG = 1 << 22;
+
+    /**
+     * {@link BlockTags#LOGS}.
+     */
+    public static final int LOGS_TAG = 1 << 23;
+
+    /**
+     * {@link BlockTags#FIRE}.
+     */
+    public static final int FIRE_TAG = 1 << 24;
+
+    /**
      * {@link #WALLS_TAG} or {@link #FENCE_GATE_CLASS}.
      */
     public static final int WALLS_TAG_OR_FENCE_GATE_CLASS = WALLS_TAG | FENCE_GATE_CLASS;
@@ -183,6 +198,9 @@ public final class BlockMasks {
         i |= PiglinSpecificSensor.gale$precompute_isValidRepellent_compute(state) ? IS_VALID_PIGLIN_REPELLENT : 0;
         i |= state.is(BlockTags.RAILS) ? RAILS_TAG : 0;
         i |= state.is(BlockTags.RAILS) && state.getBlock() instanceof BaseRailBlock ? RAILS_TAG_AND_BASE_RAIL_CLASS : 0;
+        i |= state.is(BlockTags.LEAVES) ? LEAVES_TAG : 0;
+        i |= state.is(BlockTags.LOGS) ? LOGS_TAG : 0;
+        i |= state.is(BlockTags.FIRE) ? FIRE_TAG : 0;
         return i;
     }
 
