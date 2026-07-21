@@ -1,0 +1,40 @@
+--- a/net/minecraft/world/entity/ai/behavior/TransportItemsBetweenContainers.java
++++ b/net/minecraft/world/entity/ai/behavior/TransportItemsBetweenContainers.java
+@@ -278,14 +_,24 @@
+         AABB targetBlockSearchArea = this.getTargetSearchArea(body);
+         Set<GlobalPos> visitedPositions = getVisitedPositions(body);
+         Set<GlobalPos> unreachablePositions = getUnreachablePositions(body);
+-        List<ChunkPos> list = ChunkPos.rangeClosed(ChunkPos.containing(body.blockPosition()), Math.floorDiv(this.getHorizontalSearchDistance(body), 16) + 1)
+-            .toList();
++        // Gale start - Local code optimization - TransportItemsBetweenContainers.getTransportTarget()
++        BlockPos bodyPos = body.blockPosition();
++        int horizontalSearchDistance = this.getHorizontalSearchDistance(body);
++        int minChunkX = net.minecraft.core.SectionPos.blockToSectionCoord(bodyPos.getX() - horizontalSearchDistance);
++        int maxChunkX = net.minecraft.core.SectionPos.blockToSectionCoord(bodyPos.getX() + horizontalSearchDistance);
++        int minChunkZ = net.minecraft.core.SectionPos.blockToSectionCoord(bodyPos.getZ() - horizontalSearchDistance);
++        int maxChunkZ = net.minecraft.core.SectionPos.blockToSectionCoord(bodyPos.getZ() + horizontalSearchDistance);
++        var chunkSource = level.getChunkSource();
+         TransportItemsBetweenContainers.TransportItemTarget target = null;
+         double closestDistance = Float.MAX_VALUE;
+ 
+-        for (ChunkPos chunkPos : list) {
+-            LevelChunk levelChunk = level.getChunkSource().getChunkNow(chunkPos.x(), chunkPos.z());
+-            if (levelChunk != null) {
++        for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
++            for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
++                LevelChunk levelChunk = chunkSource.getChunkNow(chunkX, chunkZ);
++                if (levelChunk == null || levelChunk.getBlockEntities().isEmpty()) {
++                    continue;
++                }
++
+                 for (BlockEntity potentialTarget : levelChunk.getBlockEntities().values()) {
+                     if (potentialTarget instanceof ChestBlockEntity chestBlockEntity) {
+                         double distance = chestBlockEntity.getBlockPos().distToCenterSqr(body.position());
+@@ -302,6 +_,7 @@
+                 }
+             }
+         }
++        // Gale end - Local code optimization - TransportItemsBetweenContainers.getTransportTarget()
+ 
+         return target == null ? Optional.empty() : Optional.of(target);
+     }
