@@ -16,8 +16,8 @@ import net.minecraft.world.level.chunk.PaletteResize;
 
 import static it.unimi.dsi.fastutil.Hash.FAST_LOAD_FACTOR;
 
-// Based on net.caffeinemc.mods.lithium.common.world.chunk.LithiumHashPalette.
-// Modified by Gale to fit the vanilla Palette contract and chunk serialization flow.
+// Gale - Chunk serialization - Based on net.caffeinemc.mods.lithium.common.world.chunk.LithiumHashPalette.
+// Gale - Chunk serialization - Modified to fit the vanilla Palette contract and chunk serialization flow.
 public final class SerializationPalette<T> implements Palette<T> {
     private static final int ABSENT_VALUE = -1;
 

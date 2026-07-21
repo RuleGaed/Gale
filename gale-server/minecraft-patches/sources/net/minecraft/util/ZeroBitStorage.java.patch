@@ -1,0 +1,14 @@
+--- a/net/minecraft/util/ZeroBitStorage.java
++++ b/net/minecraft/util/ZeroBitStorage.java
+@@ -61,6 +_,10 @@
+     @Override
+     public BitStorage copy() {
+         return this;
+     }
++
++    // Gale - Chunk serialization
++    @Override
++    public <T> void compact(final net.minecraft.world.level.chunk.Palette<T> sourcePalette, final net.minecraft.world.level.chunk.Palette<T> destinationPalette, final net.minecraft.world.level.chunk.PaletteResize<T> resizeHandler, final short[] output) {}
+ 
+     // Paper start - block counting
+     @Override
