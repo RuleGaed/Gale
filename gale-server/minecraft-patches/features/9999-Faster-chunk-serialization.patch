@@ -7,30 +7,21 @@ This patch is based on chunk serialization compaction ideas from Lithium.
 It keeps the hot path in packed storage and avoids full int[] re-encoding.
 
 ---
- net/minecraft/util/BitStorage.java           |  4 +
- net/minecraft/util/SimpleBitStorage.java     | 66 ++++++++++++++
- net/minecraft/util/ZeroBitStorage.java       |  6 ++
- .../world/level/chunk/PalettedContainer.java | 85 +++++++++++++------
- 4 files changed, 134 insertions(+), 27 deletions(-)
+ net/minecraft/util/BitStorage.java           |  2 +
+ net/minecraft/util/SimpleBitStorage.java     | 64 ++++++++++++++
+ net/minecraft/util/ZeroBitStorage.java       |  4 +
+ .../world/level/chunk/PalettedContainer.java | 84 +++++++++++++------
+ 4 files changed, 127 insertions(+), 27 deletions(-)
 
 diff --git a/net/minecraft/util/BitStorage.java b/net/minecraft/util/BitStorage.java
 index 48f6671..363ec96 100644
 --- a/net/minecraft/util/BitStorage.java
 +++ b/net/minecraft/util/BitStorage.java
-@@ -1,6 +1,8 @@
- package net.minecraft.util;
- 
- import java.util.function.IntConsumer;
-+import net.minecraft.world.level.chunk.Palette;
-+import net.minecraft.world.level.chunk.PaletteResize;
- 
- public interface BitStorage extends ca.spottedleaf.moonrise.patches.block_counting.BlockCountingBitStorage { // Paper - block counting
-     int getAndSet(int index, int value);
-@@ -21,6 +23,8 @@ public interface BitStorage extends ca.spottedleaf.moonrise.patches.block_counti
+@@ -21,6 +21,8 @@ public interface BitStorage extends ca.spottedleaf.moonrise.patches.block_counti
  
      BitStorage copy();
  
-+    <T> void compact(Palette<T> sourcePalette, Palette<T> destinationPalette, PaletteResize<T> resizeHandler, short[] output); // Faster chunk serialization
++    <T> void compact(net.minecraft.world.level.chunk.Palette<T> sourcePalette, net.minecraft.world.level.chunk.Palette<T> destinationPalette, net.minecraft.world.level.chunk.PaletteResize<T> resizeHandler, short[] output); // Faster chunk serialization
 +
      // Paper start - block counting
      // provide default impl in case mods implement this...
@@ -39,16 +30,7 @@ diff --git a/net/minecraft/util/SimpleBitStorage.java b/net/minecraft/util/Simpl
 index 85cf4ad..a52f328 100644
 --- a/net/minecraft/util/SimpleBitStorage.java
 +++ b/net/minecraft/util/SimpleBitStorage.java
-@@ -1,6 +1,8 @@
- package net.minecraft.util;
- 
- import java.util.function.IntConsumer;
-+import net.minecraft.world.level.chunk.Palette;
-+import net.minecraft.world.level.chunk.PaletteResize;
- import org.apache.commons.lang3.Validate;
- import org.jspecify.annotations.Nullable;
- 
-@@ -251,6 +253,35 @@ public class SimpleBitStorage implements BitStorage {
+@@ -251,6 +251,35 @@ public class SimpleBitStorage implements BitStorage {
          }
      }
  
@@ -84,13 +66,13 @@ index 85cf4ad..a52f328 100644
      public SimpleBitStorage(final int bits, final int size) {
          this(bits, size, (long[])null);
      }
-@@ -399,6 +430,41 @@ public class SimpleBitStorage implements BitStorage {
+@@ -399,6 +428,41 @@ public class SimpleBitStorage implements BitStorage {
          return new SimpleBitStorage(this.bits, this.size, (long[])this.data.clone());
      }
  
 +    // Faster chunk serialization
 +    @Override
-+    public <T> void compact(final Palette<T> sourcePalette, final Palette<T> destinationPalette, final PaletteResize<T> resizeHandler, final short[] output) {
++    public <T> void compact(final net.minecraft.world.level.chunk.Palette<T> sourcePalette, final net.minecraft.world.level.chunk.Palette<T> destinationPalette, final net.minecraft.world.level.chunk.PaletteResize<T> resizeHandler, final short[] output) {
 +        if (this.size >= Short.MAX_VALUE) {
 +            throw new IllegalStateException("Array too large");
 +        }
@@ -130,22 +112,13 @@ diff --git a/net/minecraft/util/ZeroBitStorage.java b/net/minecraft/util/ZeroBit
 index 3666c3e..c7cc8f2 100644
 --- a/net/minecraft/util/ZeroBitStorage.java
 +++ b/net/minecraft/util/ZeroBitStorage.java
-@@ -2,6 +2,8 @@ package net.minecraft.util;
- 
- import java.util.Arrays;
- import java.util.function.IntConsumer;
-+import net.minecraft.world.level.chunk.Palette;
-+import net.minecraft.world.level.chunk.PaletteResize;
- import org.apache.commons.lang3.Validate;
- 
- public class ZeroBitStorage implements BitStorage {
-@@ -63,6 +65,10 @@ public class ZeroBitStorage implements BitStorage {
+@@ -63,6 +63,10 @@ public class ZeroBitStorage implements BitStorage {
          return this;
      }
  
 +    // Faster chunk serialization
 +    @Override
-+    public <T> void compact(final Palette<T> sourcePalette, final Palette<T> destinationPalette, final PaletteResize<T> resizeHandler, final short[] output) {}
++    public <T> void compact(final net.minecraft.world.level.chunk.Palette<T> sourcePalette, final net.minecraft.world.level.chunk.Palette<T> destinationPalette, final net.minecraft.world.level.chunk.PaletteResize<T> resizeHandler, final short[] output) {}
 +
      // Paper start - block counting
      @Override
@@ -154,11 +127,10 @@ diff --git a/net/minecraft/world/level/chunk/PalettedContainer.java b/net/minecr
 index 26dbb9d..be4d348 100644
 --- a/net/minecraft/world/level/chunk/PalettedContainer.java
 +++ b/net/minecraft/world/level/chunk/PalettedContainer.java
-@@ -20,9 +20,12 @@ import net.minecraft.util.ExtraCodecs;
+@@ -20,9 +20,11 @@ import net.minecraft.util.ExtraCodecs;
  import net.minecraft.util.SimpleBitStorage;
  import net.minecraft.util.ThreadingDetector;
  import net.minecraft.util.ZeroBitStorage;
-+import org.galemc.gale.util.collection.palette.SerializationPalette;
  import org.jspecify.annotations.Nullable;
  
  public class PalettedContainer<T> implements PaletteResize<T>, PalettedContainerRO<T> {
@@ -229,7 +201,7 @@ index 26dbb9d..be4d348 100644
 +            }
 +
 +            final int entryCount = strategy.entryCount();
-+            final SerializationPalette<T> compactedPalette = new SerializationPalette<>(currentStorage.getBits());
++            final org.galemc.gale.util.collection.palette.SerializationPalette<T> compactedPalette = new org.galemc.gale.util.collection.palette.SerializationPalette<>(currentStorage.getBits());
 +            final short[] remappedContents = getOrCreateShortArray(entryCount);
 +            currentStorage.compact(currentPalette, compactedPalette, PaletteResize.noResizeExpected(), remappedContents);
 +
