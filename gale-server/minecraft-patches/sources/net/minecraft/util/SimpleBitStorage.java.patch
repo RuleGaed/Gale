@@ -36,7 +36,7 @@
      public SimpleBitStorage(final int bits, final int size) {
          this(bits, size, (long[])null);
      }
-@@ -426,6 +_,40 @@
+@@ -399,6 +_,41 @@
      public BitStorage copy() {
          return new SimpleBitStorage(this.bits, this.size, (long[])this.data.clone());
      }
