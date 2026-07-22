@@ -99,7 +99,7 @@ Built on [Paper](https://papermc.io/),
 If you want further features or optimizations that change some behavior,
 consider [Leaf](https://www.leafmc.one/).
 
-### Authors and contributors ❤️
+### Authors and contributors
 
 <p align="center">
   <a href="https://github.com/Dreeam-qwq"><img src="https://github.com/Dreeam-qwq.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Dreeam" title="Dreeam"/></a>
