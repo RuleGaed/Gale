@@ -90,7 +90,7 @@ Building from source:
 
 Pull requests are welcomed! See the [guidelines](CONTRIBUTING.md).
 
-## Acknowledgements ❤️
+## Acknowledgements
 
 Built on [Paper](https://papermc.io/),
 [Spigot](https://www.spigotmc.org/) and
@@ -99,7 +99,7 @@ Built on [Paper](https://papermc.io/),
 If you want further features or optimizations that change some behavior,
 consider [Leaf](https://www.leafmc.one/).
 
-### Authors and contributors
+### Authors and contributors ❤️
 
 <p align="center">
   <a href="https://github.com/Dreeam-qwq"><img src="https://github.com/Dreeam-qwq.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Dreeam" title="Dreeam"/></a>
@@ -119,7 +119,7 @@ consider [Leaf](https://www.leafmc.one/).
   <a href="https://github.com/vytskalt"><img src="https://github.com/vytskalt.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="vytskalt" title="vytskalt"/></a>
 </p>
 
-### Credits
+### Third-party credits
 
 <p align="center">
   <a href="https://github.com/2No2Name"><img src="https://github.com/2No2Name.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="2No2Name" title="2No2Name"/></a>
