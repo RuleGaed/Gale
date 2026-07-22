@@ -95,39 +95,36 @@ Pull requests are welcomed! See the [guidelines](CONTRIBUTING.md).
 Built on [Paper](https://papermc.io/),
 [Spigot](https://www.spigotmc.org/) and
 [Bukkit](https://bukkit.org/).
-<!--We also use some strictly reviewed code originally written for other projects.-->
-
-<details>
-    <summary><b>Expand credits</b></summary>
-    <br>
-    <p align="center">
-        <a href="https://github.com/2No2Name"><img src="https://github.com/2No2Name.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="2No2Name" title="2No2Name"/></a>
-        <a href="https://github.com/billygalbreath"><img src="https://github.com/billygalbreath.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="Billy Galbreath" title="Billy Galbreath"/></a>
-        <a href="https://github.com/Dreeam-qwq"><img src="https://github.com/Dreeam-qwq.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="Dreeam" title="Dreeam"/></a>
-        <a href="https://github.com/etil2jz"><img src="https://github.com/etil2jz.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="etil2jz" title="etil2jz"/></a>
-        <a href="https://github.com/foss-mc"><img src="https://github.com/foss-mc.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="foss-mc" title="foss-mc"/></a>
-        <a href="https://github.com/granny"><img src="https://github.com/granny.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="granny" title="granny"/></a>
-        <a href="https://github.com/ishland"><img src="https://github.com/ishland.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="ishland" title="ishland"/></a>
-        <a href="https://github.com/jaskarth"><img src="https://github.com/jaskarth.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="jaskarth" title="jaskarth"/></a>
-        <a href="https://github.com/jellysquid3"><img src="https://github.com/jellysquid3.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="jellysquid3" title="jellysquid3"/></a>
-        <a href="https://github.com/HaHaWTH"><img src="https://github.com/HaHaWTH.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="HaHaWTH" title="HaHaWTH"/></a>
-        <a href="https://github.com/hayanesuru"><img src="https://github.com/hayanesuru.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="hayanesuru" title="hayanesuru"/></a>
-        <a href="https://github.com/lilingfengdev"><img src="https://github.com/lilingfengdev.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="lilingfengdev" title="lilingfengdev"/></a>
-        <a href="https://github.com/MartijnMuijsers"><img src="https://github.com/MartijnMuijsers.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="Martijn Muijsers" title="Martijn Muijsers"/></a>
-        <a href="https://github.com/wling-art"><img src="https://github.com/wling-art.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="MrlingXD" title="MrlingXD"/></a>
-        <a href="https://github.com/MrPowerGamerBR"><img src="https://github.com/MrPowerGamerBR.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="MrPowerGamerBR" title="MrPowerGamerBR"/></a>
-        <a href="https://github.com/noramibu"><img src="https://github.com/noramibu.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="noramibu" title="noramibu"/></a>
-        <a href="https://github.com/nostalfinals"><img src="https://github.com/nostalfinals.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="Nostal Yuu" title="Nostal Yuu"/></a>
-        <a href="https://github.com/OverwriteMC"><img src="https://github.com/OverwriteMC.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="OverwriteMC" title="OverwriteMC"/></a>
-        <a href="https://github.com/PaulBGD"><img src="https://github.com/PaulBGD.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="PaulBGD" title="PaulBGD"/></a>
-        <a href="https://github.com/PureGero"><img src="https://github.com/PureGero.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="PureGero" title="PureGero"/></a>
-        <a href="https://github.com/RuleGaed"><img src="https://github.com/RuleGaed.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="RuleGaed" title="RuleGaed"/></a>
-        <a href="https://github.com/Smorki"><img src="https://github.com/Smorki.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="Smorki" title="Smorki"/></a>
-        <a href="https://github.com/Taiyou06"><img src="https://github.com/Taiyou06.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="Taiyou" title="Taiyou"/></a>
-        <a href="https://github.com/toprakdevx"><img src="https://github.com/toprakdevx.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="Toprak" title="Toprak"/></a>
-        <a href="https://github.com/vytskalt"><img src="https://github.com/vytskalt.png?size=60" width="40px" height="40px" style="border-radius: 50%" alt="vytskalt" title="vytskalt"/></a>
-    </p>
-</details>
 
 If you want further features or optimizations that change some behavior,
 consider [Leaf](https://www.leafmc.one/).
+
+## Thanks to all contributors ❤️
+
+<p align="center">
+  <a href="https://github.com/2No2Name"><img src="https://github.com/2No2Name.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="2No2Name" title="2No2Name"/></a>
+  <a href="https://github.com/billygalbreath"><img src="https://github.com/billygalbreath.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Billy Galbreath" title="Billy Galbreath"/></a>
+  <a href="https://github.com/Dreeam-qwq"><img src="https://github.com/Dreeam-qwq.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Dreeam" title="Dreeam"/></a>
+  <a href="https://github.com/etil2jz"><img src="https://github.com/etil2jz.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="etil2jz" title="etil2jz"/></a>
+  <a href="https://github.com/foss-mc"><img src="https://github.com/foss-mc.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="foss-mc" title="foss-mc"/></a>
+  <a href="https://github.com/granny"><img src="https://github.com/granny.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="granny" title="granny"/></a>
+  <a href="https://github.com/ishland"><img src="https://github.com/ishland.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="ishland" title="ishland"/></a>
+  <a href="https://github.com/jaskarth"><img src="https://github.com/jaskarth.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="jaskarth" title="jaskarth"/></a>
+  <a href="https://github.com/jellysquid3"><img src="https://github.com/jellysquid3.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="jellysquid3" title="jellysquid3"/></a>
+  <a href="https://github.com/HaHaWTH"><img src="https://github.com/HaHaWTH.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="HaHaWTH" title="HaHaWTH"/></a>
+  <a href="https://github.com/hayanesuru"><img src="https://github.com/hayanesuru.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="hayanesuru" title="hayanesuru"/></a>
+  <a href="https://github.com/lilingfengdev"><img src="https://github.com/lilingfengdev.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="lilingfengdev" title="lilingfengdev"/></a>
+  <a href="https://github.com/MartijnMuijsers"><img src="https://github.com/MartijnMuijsers.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Martijn Muijsers" title="Martijn Muijsers"/></a>
+  <a href="https://github.com/wling-art"><img src="https://github.com/wling-art.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="MrlingXD" title="MrlingXD"/></a>
+  <a href="https://github.com/MrPowerGamerBR"><img src="https://github.com/MrPowerGamerBR.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="MrPowerGamerBR" title="MrPowerGamerBR"/></a>
+  <a href="https://github.com/noramibu"><img src="https://github.com/noramibu.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="noramibu" title="noramibu"/></a>
+  <a href="https://github.com/nostalfinals"><img src="https://github.com/nostalfinals.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Nostal Yuu" title="Nostal Yuu"/></a>
+  <a href="https://github.com/OverwriteMC"><img src="https://github.com/OverwriteMC.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="OverwriteMC" title="OverwriteMC"/></a>
+  <a href="https://github.com/PaulBGD"><img src="https://github.com/PaulBGD.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="PaulBGD" title="PaulBGD"/></a>
+  <a href="https://github.com/PureGero"><img src="https://github.com/PureGero.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="PureGero" title="PureGero"/></a>
+  <a href="https://github.com/RuleGaed"><img src="https://github.com/RuleGaed.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="RuleGaed" title="RuleGaed"/></a>
+  <a href="https://github.com/Smorki"><img src="https://github.com/Smorki.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Smorki" title="Smorki"/></a>
+  <a href="https://github.com/Taiyou06"><img src="https://github.com/Taiyou06.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Taiyou" title="Taiyou"/></a>
+  <a href="https://github.com/toprakdevx"><img src="https://github.com/toprakdevx.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Toprak" title="Toprak"/></a>
+  <a href="https://github.com/vytskalt"><img src="https://github.com/vytskalt.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="vytskalt" title="vytskalt"/></a>
+</p>
