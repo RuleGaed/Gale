@@ -113,7 +113,6 @@ consider [Leaf](https://www.leafmc.one/).
   <a href="https://github.com/jellysquid3"><img src="https://github.com/jellysquid3.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="jellysquid3" title="jellysquid3"/></a>
   <a href="https://github.com/HaHaWTH"><img src="https://github.com/HaHaWTH.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="HaHaWTH" title="HaHaWTH"/></a>
   <a href="https://github.com/hayanesuru"><img src="https://github.com/hayanesuru.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="hayanesuru" title="hayanesuru"/></a>
-  <a href="https://github.com/lilingfengdev"><img src="https://github.com/lilingfengdev.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="lilingfengdev" title="lilingfengdev"/></a>
   <a href="https://github.com/MartijnMuijsers"><img src="https://github.com/MartijnMuijsers.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="Martijn Muijsers" title="Martijn Muijsers"/></a>
   <a href="https://github.com/wling-art"><img src="https://github.com/wling-art.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="MrlingXD" title="MrlingXD"/></a>
   <a href="https://github.com/MrPowerGamerBR"><img src="https://github.com/MrPowerGamerBR.png?size=80" width="45" height="45" style="border-radius: 50%; object-fit: cover;" alt="MrPowerGamerBR" title="MrPowerGamerBR"/></a>
